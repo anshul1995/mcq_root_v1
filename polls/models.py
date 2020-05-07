@@ -5,7 +5,7 @@ from django.utils import timezone
 
 # Create your models here.
 class Base_Question(models.Model):
-    question_text = models.CharField(max_length=200)
+    question_text = models.CharField(max_length=2000)
     pub_date = models.DateTimeField('date published')
     def __str__(self):
         return self.question_text
@@ -29,11 +29,20 @@ class Question(Base_Question):
         default=TYPE1,
     )
 
+class Student_Question(Base_Question):
+    explanation_text = models.CharField(max_length=2000)
 
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+
+class Base_Choice(models.Model):
     choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
     is_correct = models.BooleanField(default=False)
     def __str__(self):
         return self.choice_text
+
+    class Meta:
+        abstract = True
+
+
+class Choice(Base_Choice):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    votes = models.IntegerField(default=0)
