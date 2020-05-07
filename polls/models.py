@@ -23,7 +23,7 @@ class Question(Base_Question):
         (TYPE1, 'For all students'),
         (TYPE2, 'For students not creating a question'),
     ]
-    questiion_type = models.CharField(
+    question_type = models.CharField(
         max_length=2,
         choices=QUESTION_TYPE_CHOICES,
         default=TYPE1,
