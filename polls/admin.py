@@ -19,11 +19,12 @@ class QuestionAdmin(admin.ModelAdmin):
 
 class StudentChoiceInline(admin.TabularInline):
     model = Student_Choice
+    extra = 0
 
 
 class StudentQuestionAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['question_text', 'explanation_text']}),
+        (None,               {'fields': ['question_text', 'explanation_text', 'by_student']}),
         ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
     ]
     inlines = [StudentChoiceInline]
