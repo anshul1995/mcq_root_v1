@@ -5,26 +5,28 @@ from django.urls import reverse
 from django.db.models import F
 from django.views import generic
 from django.utils import timezone
-from .models import Question, Choice
+from django.views.decorators.http import require_http_methods
+
+from .models import Question, Choice, Student, Student_Choice, Student_Question
+from .forms import LoginForm 
 
 
-class IndexView(generic.ListView):
-    template_name = 'polls/index.html'
-    context_object_name = 'latest_question_list'
+@require_http_methods(['GET', 'POST'])
+def index(request):
+    if request.method == 'GET':
+        f = LoginForm()
+    else:
+        f = LoginForm(request.POST)
+        if f.is_valid():
+            student = f.save()
+            return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
+    return render(request, 'polls/login_form.html', {'form': f})
 
-    def get_queryset(self):
-        """Return the last five published questions."""
-        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
 
-class DetailView(generic.DetailView):
-    model = Question
-    template_name = 'polls/detail.html'
 
-    def get_queryset(self):
-        """
-        Excludes any questions that aren't published yet.
-        """
-        return Question.objects.filter(pub_date__lte=timezone.now())
+def quiz(request, student_id):
+    student = get_object_or_404(Student, pk=student_id)
+    return HttpResponse("Hello, world. You're at QUIZ %s." % student.get_group())
 
 class ResultsView(generic.DetailView):
     model = Question
