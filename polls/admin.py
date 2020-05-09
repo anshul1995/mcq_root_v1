@@ -12,7 +12,7 @@ class ChoiceInline(admin.TabularInline):
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['question_text', 'question_type']}),
-        ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
+        # ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
     ]
     inlines = [ChoiceInline]
 
@@ -25,7 +25,7 @@ class StudentChoiceInline(admin.TabularInline):
 class StudentQuestionAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['question_text', 'explanation_text', 'by_student']}),
-        ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
+        # ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
     ]
     inlines = [StudentChoiceInline]
 
@@ -36,9 +36,10 @@ class StudentResponseInline(admin.TabularInline):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    fieldsets = [
-        ('Student information', {'fields': ['name', 'attempted', 'group']}),
-    ]
+    fieldsets = (
+        ('Student information', {'fields': ['name', 'attempted', 'group', 'id']}),
+    )
+    readonly_fields = ('id',)
     inlines = [StudentResponseInline]
 
 admin.site.register(Question, QuestionAdmin)

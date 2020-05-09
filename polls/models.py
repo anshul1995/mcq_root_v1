@@ -6,7 +6,7 @@ from django.utils import timezone
 # Create your models here.
 class Base_Question(models.Model):
     question_text = models.CharField(max_length=2000)
-    pub_date = models.DateTimeField('date published')
+    pub_date = models.DateTimeField('date published', auto_now_add=True)
     def __str__(self):
         return self.question_text
     def was_published_recently(self):
@@ -57,10 +57,14 @@ class Student(models.Model):
     GROUP1 = 'G1'
     GROUP2 = 'G2'
     GROUP3 = 'G3'
+    GROUP4 = 'G4'
+    GROUP5 = 'G5'
     GROUP_TYPE_CHOICES = [
         (GROUP1, 'Control group'),
         (GROUP2, 'Experimental group without choice'),
         (GROUP3, 'Experimental group with choice'),
+        (GROUP4, 'Group 3 choosing not to create MCQ'),
+        (GROUP5, 'Group 3 choosing to create MCQ'),
     ]
     name = models.CharField(max_length=200, unique=True)
     attempted = models.BooleanField(default=False)

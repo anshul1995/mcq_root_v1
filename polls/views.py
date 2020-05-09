@@ -27,7 +27,6 @@ def quiz(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
     if student.attempted:
         return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
-    # group = student.get_group()
     latest_question_list = Question.objects.filter(question_type='T1')
     if student.group == 'G1':
         latest_question_list = latest_question_list.union(Question.objects.filter(question_type='T2'))
