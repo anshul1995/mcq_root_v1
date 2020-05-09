@@ -54,12 +54,32 @@ class Choice(Base_Choice):
 
 
 class Student(models.Model):
+    GROUP1 = 'G1'
+    GROUP2 = 'G2'
+    GROUP3 = 'G3'
+    GROUP_TYPE_CHOICES = [
+        (GROUP1, 'Control group'),
+        (GROUP2, 'Experimental group without choice'),
+        (GROUP3, 'Experimental group with choice'),
+    ]
     name = models.CharField(max_length=200, unique=True)
+    attempted = models.BooleanField(default=False)
+    group = models.CharField(
+        max_length=2,
+        choices=GROUP_TYPE_CHOICES,
+        default='G'+str(1 + hash(name) % 3),
+    )
 
     def __str__(self):
         return self.name
-    def get_group(self):
-        return 1 + hash(self.name)%3
+    # def get_group(self):
+    #     if hash(self.name) % 3 == 0:
+    #         return 'G1'
+    #     elif hash(self.name) % 3 == 2:
+    #         return 'G2'
+    #     else:
+    #         return 'G3'
+    #    return 1 + hash(self.name)%3
 
 
 class Student_Question(Base_Question):
@@ -68,9 +88,17 @@ class Student_Question(Base_Question):
         Student,
         on_delete=models.CASCADE,
         related_name='creator_of',
-        # null=True,
     )
 
 
 class Student_Choice(Base_Choice):
     question = models.ForeignKey(Student_Question, on_delete=models.CASCADE)
+
+
+class Student_Response(models.Model):
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    question_id = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice_id = models.ForeignKey(Choice, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.student_id) + ' : ' + str(self.question_id) + ' - ' + str(self.choice_id)

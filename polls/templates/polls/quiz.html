@@ -2,11 +2,23 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'polls:vote' question.id %}" method="post">
+
+{% if latest_question_list %}
+
+<form action="{% url 'polls:submit' student.id %}" method="post">
     {% csrf_token %}
-    {% for choice in question.choice_set.all %}
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+    {% for question in latest_question_list %}
+    {{ question.question_text }}<br>
+        {% for choice in question.choice_set.all %}
+        <input type="radio" name="mcq_{{ question.id }}" id="{{ question.id }}choice{{ forloop.counter }}" value="{{ question.id }},{{ choice.id }}" required>
+        <label for="{{ question.id }}choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+        {% endfor %}
     {% endfor %}
+
     <input type="submit" value="Vote">
 </form>
+
+{% else %}
+<p>No quiz is available.</p>
+{% endif %}
+

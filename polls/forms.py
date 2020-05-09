@@ -4,4 +4,4 @@ from .models import Student
 class LoginForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = '__all__'
+        fields = ['name']
