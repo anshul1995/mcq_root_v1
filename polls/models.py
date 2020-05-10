@@ -66,8 +66,21 @@ class Student(models.Model):
         (GROUP4, 'Group 3 choosing not to create MCQ'),
         (GROUP5, 'Group 3 choosing to create MCQ'),
     ]
+    STAGE1 = 'S1'
+    STAGE2 = 'S2'
+    STAGE3 = 'S3'
+    STAGE_CHOICES = [
+        (STAGE1, 'Information page'),
+        (STAGE2, 'Quiz'),
+        (STAGE3, 'Results'),
+    ]
     name = models.CharField(max_length=200, unique=True)
-    attempted = models.BooleanField(default=False)
+    # attempted = models.BooleanField(default=False)
+    stage = models.CharField(
+        max_length=2,
+        choices=STAGE_CHOICES,
+        default='S1',
+    )
     group = models.CharField(
         max_length=2,
         choices=GROUP_TYPE_CHOICES,
@@ -76,14 +89,6 @@ class Student(models.Model):
 
     def __str__(self):
         return self.name
-    # def get_group(self):
-    #     if hash(self.name) % 3 == 0:
-    #         return 'G1'
-    #     elif hash(self.name) % 3 == 2:
-    #         return 'G2'
-    #     else:
-    #         return 'G3'
-    #    return 1 + hash(self.name)%3
 
 
 class Student_Question(Base_Question):
