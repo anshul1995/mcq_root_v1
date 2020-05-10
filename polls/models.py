@@ -1,4 +1,5 @@
 import datetime
+import random
 
 from django.db import models
 from django.utils import timezone
@@ -84,7 +85,7 @@ class Student(models.Model):
     group = models.CharField(
         max_length=2,
         choices=GROUP_TYPE_CHOICES,
-        default='G'+str(1 + hash(name) % 3),
+        default='G'+str(random.randrange(1,4)),
     )
 
     def __str__(self):

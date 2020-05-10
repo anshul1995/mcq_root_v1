@@ -7,6 +7,8 @@ from django.views import generic
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods, require_POST
 
+import random
+
 from .models import Question, Choice, Student, Student_Choice, Student_Question, Student_Response
 from .forms import LoginForm 
 
@@ -19,25 +21,52 @@ def index(request):
         f = LoginForm(request.POST)
         if f.is_valid():
             student = f.save()
+            student.group = random.choice(
+                [Student.GROUP1, Student.GROUP2, Student.GROUP3])
+            student.save()
             return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
     return render(request, 'polls/login_form.html', {'form': f})
 
 
+@require_http_methods(['GET', 'POST'])
+def info(request, student_id):
+    student = get_object_or_404(Student, pk=student_id)
+    if student.stage == Student.STAGE2:
+        return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
+    elif student.stage == Student.STAGE3:
+        return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
+    if request.method == 'POST':
+        student.stage = Student.STAGE2
+        if student.group == Student.GROUP3:
+            if request.POST['G3_choice'] == Student.GROUP4:
+                student.group = Student.GROUP4
+            else:
+                student.group = Student.GROUP5
+        student.save()
+        return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
+    return render(request, 'polls/info.html', {'student': student})
+
+
 def quiz(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
-    if student.attempted:
+    if student.stage == Student.STAGE1:
+        return HttpResponseRedirect(reverse('polls:info', args=(student.id,)))
+    elif student.stage == Student.STAGE3:
         return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
-    latest_question_list = Question.objects.filter(question_type='T1')
-    if student.group == 'G1':
-        latest_question_list = latest_question_list.union(Question.objects.filter(question_type='T2'))
+    latest_question_list = Question.objects.filter(
+        question_type=Question.TYPE1)
+    if student.group == Student.GROUP1 or student.group == Student.GROUP4:
+        latest_question_list = latest_question_list.union(
+            Question.objects.filter(question_type=Question.TYPE2))
     context = {'latest_question_list': latest_question_list, 'student' : student}
     return render(request, 'polls/quiz.html', context)
 
 
-
 def results(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
-    if not student.attempted:
+    if student.stage == Student.STAGE1:
+        return HttpResponseRedirect(reverse('polls:info', args=(student.id,)))
+    elif student.stage == Student.STAGE2:
         return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
     responses = Student_Response.objects.filter(student_id=student)
     _dict = []
@@ -48,16 +77,18 @@ def results(request, student_id):
         if response.choice_id.is_correct:
             score += 1
         _dict.append(str(response.choice_id))
-    data = (student, score, total)
-    return HttpResponse("Hello, world. You're at results for %s. You answered %d out of %d questions correctly." % data)
+    context = {'student': student, 'score': score, 'total': total}
+    return render(request, 'polls/results.html', context)
 
 
 @require_POST
 def submit(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
-    if not student.attempted:
-        student.attempted = True
-        student.save()
+    if student.stage == Student.STAGE1:
+        return HttpResponseRedirect(reverse('polls:info', args=(student.id,)))
+    elif student.stage == Student.STAGE3:
+        return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
+    else:
         for key, value in request.POST.items():
             if key.startswith('mcq_'):
                 question_id = int(value.split(',')[0])
@@ -72,7 +103,7 @@ def submit(request, student_id):
                     choice.save()
                 except Exception:
                     pass
-        if student.group == 'G2':
+        if student.group == Student.GROUP2 or student.group == Student.GROUP5:
             student_question = Student_Question()
             student_question.question_text = request.POST['student_question']
             student_question.by_student = student
@@ -88,5 +119,7 @@ def submit(request, student_id):
                     else:
                         student_choice.is_correct = False
                     student_choice.save()
-    
+        student.stage = Student.STAGE3
+        student.save()
+
     return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))

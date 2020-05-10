@@ -1,0 +1,31 @@
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+
+{% if student %}
+
+<form action="{% url 'polls:info' student.id %}" method="post">
+    {% csrf_token %}
+
+    {% if student.group == 'G1' %}
+        <p>You will have to answer 10 MCQs on the next page.</p>
+
+    {% elif student.group == 'G2' %}
+        <p>You will have to answer 6 MCQs and then create an MCQ on the next page.</p>
+
+    {% elif student.group == 'G3' %}
+        <p>You can either answer 10 MCQs or answer 6 MCQs and then create an MCQ on the next page.</p>
+        <input type="radio" name="G3_choice" id="G3_choice_G4" value='G4' required>
+        <label for="G3_choice_G4">Answer 10 MCQs</label><br>
+        <input type="radio" name="G3_choice" id="G3_choice_G5" value='G5' required>
+        <label for="G3_choice_G5">Answer 6 MCQs and create an MCQ</label><br>
+
+    {% else %}
+        <p>ERROR</p>
+    {% endif %}
+
+    <input type="submit" value="Procees to quiz">
+</form>
+
+{% else %}
+<p>No information is available.</p>
+{% endif %}

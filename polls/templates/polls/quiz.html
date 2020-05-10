@@ -1,5 +1,3 @@
-<h1>{{ question.question_text }}</h1>
-
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 
@@ -8,14 +6,14 @@
 <form action="{% url 'polls:submit' student.id %}" method="post">
     {% csrf_token %}
     {% for question in latest_question_list %}
-    {{ question.question_text }}<br>
+        <h1>{{ question.question_text }}</h1><br>
         {% for choice in question.choice_set.all %}
         <input type="radio" name="mcq_{{ question.id }}" id="{{ question.id }}choice{{ forloop.counter }}" value="{{ question.id }},{{ choice.id }}" required>
         <label for="{{ question.id }}choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
         {% endfor %}
     {% endfor %}
 
-    {% if student.group == 'G2' %}
+    {% if student.group == 'G2' or student.group == 'G5' %}
     <p>Create MCQ.</p>
 
     <label for="student_question">Question: (required)</label><br>
@@ -33,10 +31,6 @@
     <label for="student_explanation">Explanation: (required)</label><br>
     <input type="text" id="student_explanation" name="student_explanation" required><br>
 
-    {% endif %}
-
-    {% if student.group == 'G3' %}
-    <p>Make a choice.</p>
     {% endif %}
 
     <input type="submit" value="Submit Quiz">

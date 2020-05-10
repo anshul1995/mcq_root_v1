@@ -43,9 +43,9 @@ class StudentResponseInline(admin.TabularInline):
 
 class StudentAdmin(admin.ModelAdmin):
     fieldsets = (
-        ('Student information', {'fields': ['name', 'attempted', 'group', 'id']}),
+        ('Student information', {'fields': ['name', 'stage', 'group', 'id']}),
     )
-    readonly_fields = ('id','name','attempted',)
+    readonly_fields = ('id','name','stage',)
     inlines = [StudentResponseInline]
 
 admin.site.register(Question, QuestionAdmin)
