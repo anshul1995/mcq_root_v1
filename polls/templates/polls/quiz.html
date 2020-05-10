@@ -1,5 +1,8 @@
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% extends './base.html' %}
+{% block pagetitle %} Test {% endblock %}
+{% block content %}
 
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 {% if latest_question_list %}
 
@@ -33,10 +36,11 @@
 
     {% endif %}
 
-    <input type="submit" value="Submit Quiz">
+    <input type="submit" value="Submit Quiz" class="waves-effect waves-light btn-large">
 </form>
 
 {% else %}
 <p>No quiz is available.</p>
 {% endif %}
 
+{% endblock %}
