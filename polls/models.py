@@ -75,7 +75,7 @@ class Student(models.Model):
         (STAGE3, 'Results'),
     ]
     name = models.CharField(max_length=200, unique=True)
-    # attempted = models.BooleanField(default=False)
+    attempted = models.BooleanField(default=False)
     stage = models.CharField(
         max_length=2,
         choices=STAGE_CHOICES,
