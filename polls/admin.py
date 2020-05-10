@@ -6,6 +6,7 @@ from .models import Question, Choice, Student_Question, Student_Choice, Student,
 
 class ChoiceInline(admin.TabularInline):
     model = Choice
+    readonly_fields = ('votes',)
     extra = 3
 
 
@@ -29,7 +30,8 @@ class StudentQuestionAdmin(admin.ModelAdmin):
         (None,               {'fields': ['question_text', 'explanation_text', 'by_student']}),
         ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
     ]
-    readonly_fields = ('pub_date',)
+    readonly_fields = ('pub_date', 'question_text',
+                       'explanation_text', 'by_student',)
     inlines = [StudentChoiceInline]
 
 

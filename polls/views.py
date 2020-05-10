@@ -68,6 +68,25 @@ def submit(request, student_id):
                     choice = choice_filter[0]
                     student_response = Student_Response(student_id=student, question_id=question, choice_id=choice)
                     student_response.save()
+                    choice.votes += 1
+                    choice.save()
                 except Exception:
                     pass
+        if student.group == 'G2':
+            student_question = Student_Question()
+            student_question.question_text = request.POST['student_question']
+            student_question.by_student = student
+            student_question.explanation_text = request.POST['student_explanation']
+            student_question.save()
+            for i in range(1,6):
+                if request.POST['student_choice_'+str(i)] != '':
+                    student_choice = Student_Choice()
+                    student_choice.choice_text = request.POST['student_choice_'+str(i)]
+                    student_choice.question = student_question
+                    if i == 1:
+                        student_choice.is_correct = True
+                    else:
+                        student_choice.is_correct = False
+                    student_choice.save()
+    
     return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
