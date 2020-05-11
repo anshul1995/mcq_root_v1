@@ -1,3 +1,8 @@
+{% extends './base.html' %}
+{% block pagetitle %} Test {% endblock %}
+{% block content %}
+
+
 {% if student and score and total %}
 
 <p>
@@ -8,4 +13,6 @@
 <p>No results available.</p>
 {% endif %}
 
-<a href="{% url 'polls:index' %}">Take quiz again?</a>
+<a href="{% url 'polls:index' %}" class="btn waves-effect waves-light umblue">Take quiz again?</a>
+
+{% endblock %}

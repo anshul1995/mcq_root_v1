@@ -1,7 +1,14 @@
-li a {
-    color: green;
+.umblue {
+    background-color: #00274C !important;
+    color: white !important;
 }
 
-body {
-    background: white url("images/background.jpg") repeat;
+.ummaize {
+    background-color: #FFCB05 !important;
+    color: #00274C !important;
+}
+
+#um-logo {
+    height: 100%;
+    padding: 2.5%;
 }

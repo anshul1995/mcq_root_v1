@@ -1,3 +1,7 @@
+{% load static %}
+
+
+
 <!DOCTYPE html>
 <html>
 
@@ -5,13 +9,26 @@
     <title> {% block pagetitle %} University of Michigan - Quiz {% endblock %}</title>
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
     {% block extrahead %}{% endblock %}
 </head>
 
 <body>
+    <header>
+        <nav class="umblue">
+            <div class="nav-wrapper container">
+                <div class="brand-logo left">
+                    <img src="{% static 'polls/images/UM_logo.svg' %}" id="um-logo" class="responsive-img">
+                </div>
+                <span class="brand-logo center">Quiz</span>
+            </div>
+        </nav>
+    </header>
     <main class="container">
+        
         {% block content %}{% endblock %}
     </main>
+    <footer class="page-footer umblue" style="margin-top:5rem"></footer>
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     {% block scripts %}{% endblock %}

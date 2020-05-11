@@ -8,35 +8,48 @@
 
 <form action="{% url 'polls:submit' student.id %}" method="post">
     {% csrf_token %}
-    {% for question in latest_question_list %}
-        <h1>{{ question.question_text }}</h1><br>
-        {% for choice in question.choice_set.all %}
-        <input type="radio" name="mcq_{{ question.id }}" id="{{ question.id }}choice{{ forloop.counter }}" value="{{ question.id }},{{ choice.id }}" required>
-        <label for="{{ question.id }}choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+    <div class="collection">
+        {% for question in latest_question_list %}
+        <div class="collection-item grey lighten-5">
+            <span class="flow-text">Q{{ forloop.counter }}. {{ question.question_text }}</span>
+            {% for choice in question.choice_set.all %}
+            <p>
+                <label>
+                    <input type="radio" name="mcq_{{ question.id }}" id="{{ question.id }}choice{{ forloop.counter }}"
+                        value="{{ question.id }},{{ choice.id }}" required>
+                    <span class="black-text">{{ choice.choice_text }}</span>
+                </label>
+            </p>
+            {% endfor %}
+        </div>
+
         {% endfor %}
-    {% endfor %}
 
-    {% if student.group == 'G2' or student.group == 'G5' %}
-    <p>Create MCQ.</p>
+        {% if student.group == 'G2' or student.group == 'G5' %}
 
-    <label for="student_question">Question: (required)</label><br>
-    <input type="text" id="student_question" name="student_question" required><br>
-    <label for="student_choice_1">Correct Choice 1: (required)</label><br>
-    <input type="text" id="student_choice_1" name="student_choice_1" required><br>
-    <label for="student_choice_2">Incorrect Choice 2: (required)</label><br>
-    <input type="text" id="student_choice_2" name="student_choice_2" required><br>
-    <label for="student_choice_3">Incorrect Choice 3: (required)</label><br>
-    <input type="text" id="student_choice_3" name="student_choice_3" required><br>
-    <label for="student_choice_4">Incorrect Choice 4: (optional)</label><br>
-    <input type="text" id="student_choice_4" name="student_choice_4"><br>
-    <label for="student_choice_5">Incorrect Choice 5: (optional)</label><br>
-    <input type="text" id="student_choice_5" name="student_choice_5"><br>
-    <label for="student_explanation">Explanation: (required)</label><br>
-    <input type="text" id="student_explanation" name="student_explanation" required><br>
+        <div class="collection-item grey lighten-5">
+            <p>Create MCQ.</p>
 
+            <label for="student_question">Question: (required)</label><br>
+            <input type="text" id="student_question" name="student_question" required><br>
+            <label for="student_choice_1">Correct Choice 1: (required)</label><br>
+            <input type="text" id="student_choice_1" name="student_choice_1" required><br>
+            <label for="student_choice_2">Incorrect Choice 2: (required)</label><br>
+            <input type="text" id="student_choice_2" name="student_choice_2" required><br>
+            <label for="student_choice_3">Incorrect Choice 3: (required)</label><br>
+            <input type="text" id="student_choice_3" name="student_choice_3" required><br>
+            <label for="student_choice_4">Incorrect Choice 4: (optional)</label><br>
+            <input type="text" id="student_choice_4" name="student_choice_4"><br>
+            <label for="student_choice_5">Incorrect Choice 5: (optional)</label><br>
+            <input type="text" id="student_choice_5" name="student_choice_5"><br>
+            <label for="student_explanation">Explanation: (required)</label><br>
+            <input type="text" id="student_explanation" name="student_explanation" required>
+        </div>
     {% endif %}
-
-    <input type="submit" value="Submit Quiz" class="waves-effect waves-light btn-large">
+    </div>
+    <button class="btn waves-effect waves-light umblue" type="submit" name="action">
+        Suubmit quiz
+    </button>
 </form>
 
 {% else %}
