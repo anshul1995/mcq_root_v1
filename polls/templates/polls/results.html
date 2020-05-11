@@ -2,17 +2,26 @@
 {% block pagetitle %} Test {% endblock %}
 {% block content %}
 
+<div class="row">
+    {% if student and score and total %}
 
-{% if student and score and total %}
 
-<p>
-    Hello, world. You're at results for {{ student.name }}. You answered {{ score}} out of {{ total }} questions correctly.
-</p>
+    <p class="flow-text">
+        Hello {{ student.name }}. You answered {{ score }} out of {{ total }} questions correctly.
+    </p>
 
-{% else %}
-<p>No results available.</p>
-{% endif %}
 
-<a href="{% url 'polls:index' %}" class="btn waves-effect waves-light umblue">Take quiz again?</a>
+    {% else %}
+    <p>No results available.</p>
+    {% endif %}
+
+</div>
+
+<div class="row">
+    <p class="flow-text">
+        <a href="{% url 'polls:index' %}" class="btn waves-effect waves-light umblue">Take quiz again?</a>
+    </p>
+</div>
+
 
 {% endblock %}
