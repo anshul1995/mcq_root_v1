@@ -69,15 +69,14 @@ def results(request, student_id):
     elif student.stage == Student.STAGE2:
         return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
     responses = Student_Response.objects.filter(student_id=student)
-    _dict = []
     score = 0
     total = 0
     for response in responses:
         total += 1
         if response.choice_id.is_correct:
             score += 1
-        _dict.append(str(response.choice_id))
-    context = {'student': student, 'score': score, 'total': total}
+    context = {'student': student, 'score': str(score), 'total': str(total)}
+    print(context)
     return render(request, 'polls/results.html', context)
 
 
