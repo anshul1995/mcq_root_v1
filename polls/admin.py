@@ -21,7 +21,8 @@ class QuestionAdmin(admin.ModelAdmin):
 
 class StudentChoiceInline(admin.TabularInline):
     model = Student_Choice
-    readonly_fields = ('question',)
+    readonly_fields = ('question', 'choice_text', 'is_correct',)
+    can_delete = False
     extra = 0
 
 
@@ -41,12 +42,20 @@ class StudentResponseInline(admin.TabularInline):
     can_delete = False
     extra = 0
 
+class StudentQuestionResponseInline(admin.TabularInline):
+    model = Student_Question
+    readonly_fields = ('question_text', 'explanation_text',)
+    can_delete = False
+    extra = 0
+
+
 class StudentAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Student information', {'fields': ['name', 'stage', 'group', 'id']}),
     )
     readonly_fields = ('id','name','stage',)
-    inlines = [StudentResponseInline]
+    inlines = [StudentResponseInline,
+               StudentQuestionResponseInline]
 
 admin.site.register(Question, QuestionAdmin)
 
