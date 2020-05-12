@@ -1,0 +1,108 @@
+{% extends './base.html' %}
+{% block content %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<div class="row">
+    <p class="flow-text">
+        Hello {{ student.name }}. Please answer the questions below.
+    </p>
+</div>
+
+<div class="row">
+    {% if latest_question_list %}
+
+    <form action="{% url 'polls:submit' student.id %}" method="post" class="col s12">
+        {% csrf_token %}
+        <div class="collection">
+            {% for question in latest_question_list %}
+            <div class="collection-item grey lighten-5">
+                <span class="flow-text">Q{{ forloop.counter }}. {{ question.question_text }}</span>
+                {% for choice in question.choice_set.all %}
+                <p>
+                    <label>
+                        <input type="radio" name="mcq_{{ question.id }}"
+                            id="{{ question.id }}choice{{ forloop.counter }}" value="{{ question.id }},{{ choice.id }}"
+                            class="with-gap umblue" required>
+                        <span class="black-text">{{ choice.choice_text }}</span>
+                    </label>
+                </p>
+                {% endfor %}
+            </div>
+
+            {% endfor %}
+
+            {% if student.group == 'G2' or student.group == 'G5' %}
+
+            <div class="collection-item grey lighten-5">
+                <p class="flow-text">Create MCQ.</p>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea class="materialize-textarea" id="student_question" name="student_question"
+                            required></textarea>
+                        <label for="student_question">Question</label>
+                        <span class="helper-text">Required</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea class="materialize-textarea" id="student_choice_1" name="student_choice_1"
+                            required></textarea>
+                        <label for="student_choice_1">Correct Choice 1</label>
+                        <span class="helper-text">Required</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <textarea class="materialize-textarea" id="student_choice_2" name="student_choice_2"
+                            required></textarea>
+                        <label for="student_choice_2">Incorrect Choice 2</label>
+                        <span class="helper-text">Required</span>
+                    </div>
+                    <div class="input-field col s12 m6">
+                        <textarea class="materialize-textarea" id="student_choice_3" name="student_choice_3"
+                            required></textarea>
+                        <label for="student_choice_3">Incorrect Choice 3</label>
+                        <span class="helper-text">Required</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <textarea class="materialize-textarea" id="student_choice_4" name="student_choice_4"></textarea>
+                        <label for="student_choice_4">Incorrect Choice 4</label>
+                        <span class="helper-text">Optional</span>
+                    </div>
+                    <div class="input-field col s12 m6">
+                        <textarea class="materialize-textarea" id="student_choice_5" name="student_choice_5"></textarea>
+                        <label for="student_choice_5">Incorrect Choice 5</label>
+                        <span class="helper-text">Optional</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea class="materialize-textarea" id="student_explanation" name="student_explanation"
+                            required></textarea>
+                        <label for="student_explanation">Explanation</label>
+                        <span class="helper-text">Required</span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <button class="btn waves-effect waves-light umblue" type="submit" name="action">
+            Suubmit quiz
+        </button>
+    </form>
+
+    {% else %}
+    <p>No quiz is available.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

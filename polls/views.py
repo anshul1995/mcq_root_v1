@@ -8,6 +8,8 @@ from django.utils import timezone
 from django.views.decorators.http import require_http_methods, require_POST
 
 import random
+import codecs
+import json
 
 from .models import Question, Choice, Student, Student_Choice, Student_Question, Student_Response
 from .forms import LoginForm 
@@ -25,6 +27,7 @@ def index(request):
                 [Student.GROUP1, Student.GROUP2, Student.GROUP3])
             student.save()
             return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
+    print(render(request, 'polls/login_form.html', {'form': f}))
     return render(request, 'polls/login_form.html', {'form': f})
 
 
@@ -37,11 +40,11 @@ def info(request, student_id):
         return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
     if request.method == 'POST':
         student.stage = Student.STAGE2
-        if student.group == Student.GROUP3:
-            if request.POST['G3_choice'] == Student.GROUP4:
-                student.group = Student.GROUP4
-            else:
-                student.group = Student.GROUP5
+        # if student.group == Student.GROUP3:
+        #     if request.POST['G3_choice'] == Student.GROUP4:
+        #         student.group = Student.GROUP4
+        #     else:
+        #         student.group = Student.GROUP5
         student.save()
         return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
     return render(request, 'polls/info.html', {'student': student})
@@ -58,8 +61,38 @@ def quiz(request, student_id):
     if student.group == Student.GROUP1 or student.group == Student.GROUP4:
         latest_question_list = latest_question_list.union(
             Question.objects.filter(question_type=Question.TYPE2))
-    context = {'latest_question_list': latest_question_list, 'student' : student}
-    return render(request, 'polls/quiz.html', context)
+    context = {'latest_question_list': latest_question_list, 'student': student}
+    return render(request, 'polls/quiz_dynamic.html', context)
+
+
+@require_POST
+def g3_choice(request, student_id):
+    student = get_object_or_404(Student, pk=student_id)
+    response_data = {}
+    latest_question_list = Question.objects.none()
+    form = ''
+    choice = request.POST.get('choice')
+    if student.group == Student.GROUP3:
+        if choice == Student.GROUP4:
+            student.group = Student.GROUP4
+            latest_question_list = Question.objects.filter(
+                question_type=Question.TYPE2)
+        else:
+            student.group = Student.GROUP5
+            form = loader.render_to_string('polls/create_mcq_form.html', {})
+        student.save()
+    submit = loader.render_to_string('polls/submit-quiz-button.html', {})
+
+    response_data['append_question_list'] = loader.render_to_string(
+        'polls/list_questions.html', {'latest_question_list': latest_question_list, 'offset': 6})
+    response_data['create_mcq_form'] = form
+    response_data['submit'] = submit
+
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+    )
+
 
 
 def results(request, student_id):
