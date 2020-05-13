@@ -25,6 +25,7 @@ def index(request):
             student = f.save()
             student.group = random.choice(
                 [Student.GROUP1, Student.GROUP2, Student.GROUP3])
+            student.stage = Student.STAGE2
             student.save()
             return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
     print(render(request, 'polls/login_form.html', {'form': f}))
