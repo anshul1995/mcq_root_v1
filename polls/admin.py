@@ -2,7 +2,8 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Question, Choice, Student_Question, Student_Choice, Student, Student_Response
+from .models import *
+
 
 class ChoiceInline(admin.TabularInline):
     model = Choice
@@ -13,10 +14,20 @@ class ChoiceInline(admin.TabularInline):
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['question_text', 'question_type']}),
-        ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
+        ('Date information', {'fields': [
+         'pub_date'], 'classes': ['collapse']}),
     ]
     readonly_fields = ('pub_date',)
     inlines = [ChoiceInline]
+
+
+class SurveyQuestionAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None,               {'fields': ['question_text', 'question_type']}),
+        ('Date information', {'fields': [
+         'pub_date'], 'classes': ['collapse']}),
+    ]
+    readonly_fields = ('pub_date',)
 
 
 class StudentChoiceInline(admin.TabularInline):
@@ -42,6 +53,13 @@ class StudentResponseInline(admin.TabularInline):
     can_delete = False
     extra = 0
 
+
+class StudentSurveyResponseInline(admin.TabularInline):
+    model = Student_Survey_Response
+    readonly_fields = ('student_id', 'survey_question_id', 'survey_choice_id',)
+    can_delete = False
+    extra = 0
+
 class StudentQuestionResponseInline(admin.TabularInline):
     model = Student_Question
     readonly_fields = ('question_text', 'explanation_text',)
@@ -55,11 +73,14 @@ class StudentAdmin(admin.ModelAdmin):
     )
     readonly_fields = ('id','name','stage',)
     inlines = [StudentResponseInline,
-               StudentQuestionResponseInline]
+               StudentQuestionResponseInline,
+               StudentSurveyResponseInline]
 
 admin.site.register(Question, QuestionAdmin)
 
 admin.site.register(Choice)
+
+admin.site.register(Survey_Question, SurveyQuestionAdmin)
 
 admin.site.register(Student_Question, StudentQuestionAdmin)
 
@@ -68,3 +89,5 @@ admin.site.register(Student_Choice)
 admin.site.register(Student, StudentAdmin)
 
 admin.site.register(Student_Response)
+
+admin.site.register(Student_Survey_Response)

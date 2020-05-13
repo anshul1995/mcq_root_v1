@@ -10,9 +10,9 @@ class Base_Question(models.Model):
     pub_date = models.DateTimeField('date published', auto_now_add=True)
     def __str__(self):
         return self.question_text
-    def was_published_recently(self):
-        now = timezone.now()
-        return now - datetime.timedelta(days=1) <= self.pub_date <= now
+    # def was_published_recently(self):
+    #     now = timezone.now()
+    #     return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
     class Meta:
         abstract = True
@@ -51,6 +51,22 @@ class Choice(Base_Choice):
     votes = models.IntegerField(default=0)
 
 
+class Survey_Question(Base_Question):
+    TYPE1 = 'T1'
+    TYPE2 = 'T2'
+    TYPE3 = 'T3'
+    QUESTION_TYPE_CHOICES = [
+        (TYPE1, 'For groups 1, 2 and 3'),
+        (TYPE2, 'For groups 2 and 3'),
+        (TYPE3, 'For groups 3'),
+    ]
+    question_type = models.CharField(
+        max_length=2,
+        choices=QUESTION_TYPE_CHOICES,
+        default=TYPE1,
+    )
+
+
 ######## STUDENT QUESTIONS ########
 
 
@@ -71,12 +87,11 @@ class Student(models.Model):
     STAGE2 = 'S2'
     STAGE3 = 'S3'
     STAGE_CHOICES = [
-        (STAGE1, 'Information page'),
-        (STAGE2, 'Quiz'),
+        (STAGE1, 'Quiz'),
+        (STAGE2, 'Survey'),
         (STAGE3, 'Results'),
     ]
     name = models.CharField(max_length=200, unique=True)
-    # attempted = models.BooleanField(default=False)
     stage = models.CharField(
         max_length=2,
         choices=STAGE_CHOICES,
@@ -112,3 +127,28 @@ class Student_Response(models.Model):
 
     def __str__(self):
         return str(self.student_id) + ' : ' + str(self.question_id) + ' - ' + str(self.choice_id)
+
+
+class Student_Survey_Response(models.Model):
+    CHOICE1 = 'C1'
+    CHOICE2 = 'C2'
+    CHOICE3 = 'C3'
+    CHOICE4 = 'C4'
+    CHOICE5 = 'C5'
+    CHOICE_TYPE_CHOICES = [
+        (CHOICE1, 'Strongly disagree'),
+        (CHOICE2, 'Somewhat disagree'),
+        (CHOICE3, 'Neither agree nor disagree'),
+        (CHOICE4, 'Somewhat agree'),
+        (CHOICE5, 'Strongly agree'),
+    ]
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    survey_question_id = models.ForeignKey(Survey_Question, on_delete=models.CASCADE)
+    survey_choice_id = models.CharField(
+        max_length=2,
+        choices=CHOICE_TYPE_CHOICES,
+        default='C1',
+    )
+
+    def __str__(self):
+        return str(self.student_id) + ' : ' + str(self.survey_question_id) + ' - ' + str(self.survey_choice_id)

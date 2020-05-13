@@ -11,7 +11,8 @@ import random
 import codecs
 import json
 
-from .models import Question, Choice, Student, Student_Choice, Student_Question, Student_Response
+from .models import *
+# from .models import Question, Choice, Student, Student_Choice, Student_Question, Student_Response, Survey_Choice, Survey_Question
 from .forms import LoginForm 
 
 
@@ -25,36 +26,17 @@ def index(request):
             student = f.save()
             student.group = random.choice(
                 [Student.GROUP1, Student.GROUP2, Student.GROUP3])
-            student.stage = Student.STAGE2
+            student.stage = Student.STAGE1
             student.save()
             return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
-    print(render(request, 'polls/login_form.html', {'form': f}))
-    return render(request, 'polls/login_form.html', {'form': f})
-
-
-@require_http_methods(['GET', 'POST'])
-def info(request, student_id):
-    student = get_object_or_404(Student, pk=student_id)
-    if student.stage == Student.STAGE2:
-        return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
-    elif student.stage == Student.STAGE3:
-        return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
-    if request.method == 'POST':
-        student.stage = Student.STAGE2
-        # if student.group == Student.GROUP3:
-        #     if request.POST['G3_choice'] == Student.GROUP4:
-        #         student.group = Student.GROUP4
-        #     else:
-        #         student.group = Student.GROUP5
-        student.save()
-        return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
-    return render(request, 'polls/info.html', {'student': student})
+    print(render(request, 'polls/STAGE0/login_form.html', {'form': f}))
+    return render(request, 'polls/STAGE0/login_form.html', {'form': f})
 
 
 def quiz(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
-    if student.stage == Student.STAGE1:
-        return HttpResponseRedirect(reverse('polls:info', args=(student.id,)))
+    if student.stage == Student.STAGE2:
+        return HttpResponseRedirect(reverse('polls:survey', args=(student.id,)))
     elif student.stage == Student.STAGE3:
         return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
     latest_question_list = Question.objects.filter(
@@ -63,7 +45,7 @@ def quiz(request, student_id):
         latest_question_list = latest_question_list.union(
             Question.objects.filter(question_type=Question.TYPE2))
     context = {'latest_question_list': latest_question_list, 'student': student}
-    return render(request, 'polls/quiz_dynamic.html', context)
+    return render(request, 'polls/STAGE1/quiz_dynamic.html', context)
 
 
 @require_POST
@@ -80,12 +62,14 @@ def g3_choice(request, student_id):
                 question_type=Question.TYPE2)
         else:
             student.group = Student.GROUP5
-            form = loader.render_to_string('polls/create_mcq_form.html', {})
+            form = loader.render_to_string(
+                'polls/STAGE1/create_mcq_form.html', {})
         student.save()
-    submit = loader.render_to_string('polls/submit-quiz-button.html', {})
+    submit = loader.render_to_string(
+        'polls/STAGE1/submit-quiz-button.html', {})
 
     response_data['append_question_list'] = loader.render_to_string(
-        'polls/list_questions.html', {'latest_question_list': latest_question_list, 'offset': 6})
+        'polls/STAGE1/list_questions.html', {'latest_question_list': latest_question_list, 'offset': 6})
     response_data['create_mcq_form'] = form
     response_data['submit'] = submit
 
@@ -95,13 +79,41 @@ def g3_choice(request, student_id):
     )
 
 
+def survey(request, student_id):
+    student = get_object_or_404(Student, pk=student_id)
+    if student.stage == Student.STAGE1:
+        return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
+    elif student.stage == Student.STAGE3:
+        return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
+    survey_question_list = Survey_Question.objects.filter(
+        question_type=Survey_Question.TYPE1)
+    if student.group != Student.GROUP1:
+        survey_question_list = survey_question_list.union(
+            Survey_Question.objects.filter(question_type=Question.TYPE2))
+    if student.group != Student.GROUP1 and student.group != Student.GROUP2:
+        survey_question_list = survey_question_list.union(
+            Survey_Question.objects.filter(question_type=Question.TYPE3))
+    context = {'survey_question_list': survey_question_list, 'student': student}
+    return render(request, 'polls/STAGE2/survey.html', context)
+
+
+@require_POST
+def submit_survey(request, student_id):
+    student = get_object_or_404(Student, pk=student_id)
+    if student.stage == Student.STAGE2:
+        return HttpResponseRedirect(reverse('polls:survey', args=(student.id,)))
+    elif student.stage == Student.STAGE3:
+        return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
+    else:
+        pass
+
 
 def results(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
     if student.stage == Student.STAGE1:
-        return HttpResponseRedirect(reverse('polls:info', args=(student.id,)))
-    elif student.stage == Student.STAGE2:
         return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
+    elif student.stage == Student.STAGE2:
+        return HttpResponseRedirect(reverse('polls:survey', args=(student.id,)))
     responses = Student_Response.objects.filter(student_id=student)
     score = 0
     total = 0
@@ -111,14 +123,14 @@ def results(request, student_id):
             score += 1
     context = {'student': student, 'score': str(score), 'total': str(total)}
     print(context)
-    return render(request, 'polls/results.html', context)
+    return render(request, 'polls/STAGE3/results.html', context)
 
 
 @require_POST
-def submit(request, student_id):
+def submit_quiz(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
-    if student.stage == Student.STAGE1:
-        return HttpResponseRedirect(reverse('polls:info', args=(student.id,)))
+    if student.stage == Student.STAGE2:
+        return HttpResponseRedirect(reverse('polls:survey', args=(student.id,)))
     elif student.stage == Student.STAGE3:
         return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
     else:
@@ -152,7 +164,6 @@ def submit(request, student_id):
                     else:
                         student_choice.is_correct = False
                     student_choice.save()
-        student.stage = Student.STAGE3
+        student.stage = Student.STAGE2
         student.save()
-
-    return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
+    return HttpResponseRedirect(reverse('polls:survey', args=(student.id,)))

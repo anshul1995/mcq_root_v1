@@ -1,0 +1,59 @@
+{% for question in survey_question_list %}
+<div class="collection-item grey lighten-5 row">
+    <span class="flow-text col s12 m7">Q{{ forloop.counter }}. {{ question.question_text }}</span>
+    <p>
+        <label class="col s12 m1">
+            <input type="radio" name="mcq_{{ question.id }}" value="{{ question.id }},1"
+                class="with-gap umblue" required>
+            <span>
+                <span class="black-text hide-on-small-only"></span>
+                <span class="black-text hide-on-med-and-up">Strongly disagree</span>
+            </span>
+        </label>
+    </p>
+
+    <p>
+        <label class="col s12 m1">
+            <input type="radio" name="mcq_{{ question.id }}" value="{{ question.id }},2"
+                class="with-gap umblue" required>
+            <span>
+                <span class="black-text hide-on-small-only"></span>
+                <span class="black-text hide-on-med-and-up">Somewhat disagree</span>
+            </span>
+        </label>
+    </p>
+
+    <p>
+        <label class="col s12 m1">
+            <input type="radio" name="mcq_{{ question.id }}" value="{{ question.id }},3"
+                class="with-gap umblue" required>
+            <span>
+                <span class="black-text hide-on-small-only"></span>
+                <span class="black-text hide-on-med-and-up">Neither agree nor disagree</span>
+            </span>
+        </label>
+    </p>
+
+    <p>
+        <label class="col s12 m1">
+            <input type="radio" name="mcq_{{ question.id }}" value="{{ question.id }},4"
+                class="with-gap umblue" required>
+            <span>
+                <span class="black-text hide-on-small-only"></span>
+                <span class="black-text hide-on-med-and-up">Somewhat agree</span>
+            </span>
+        </label>
+    </p>
+
+    <p>
+        <label class="col s12 m1">
+            <input type="radio" name="mcq_{{ question.id }}" value="{{ question.id }},5"
+                class="with-gap umblue" required>
+            <span>
+                <span class="black-text hide-on-small-only"></span>
+                <span class="black-text hide-on-med-and-up">Strongly agree</span>
+            </span>
+        </label>
+    </p>
+</div>
+{% endfor %}

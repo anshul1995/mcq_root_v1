@@ -1,0 +1,40 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+
+{% if survey_question_list %}
+    <div class="row">
+        <p class="flow-text">
+            Hello {{ student.name }}. Please answer the survey below.
+        </p>
+    </div>
+
+    <div class="row">
+        <form action="{% url 'polls:submit_survey' student.id %}" method="post" class="col s12" id="main-survey">
+            {% csrf_token %}
+            <div class="collection">
+                <div class="hide-on-small-only row">
+                    <span class="black-text col m1 offset-m7">Strongly disagree</span>
+                    <span class="black-text col m1">Somewhat disagree</span>
+                    <span class="black-text col m1">Neither agree nor disagree</span>
+                    <span class="black-text col m1">Somewhat agree</span>
+                    <span class="black-text col m1">Strongly agree</span>
+                </div>
+                <div id="questions-list">
+                    {% include "polls/STAGE2/list_questions.html" %}
+                </div>
+            </div>
+
+            <div id="submit-survey">
+                <button class="btn waves-effect waves-light umblue" type="submit" name="action">Submit survey</button>
+            </div>
+        </form>
+    </div>
+{% else %}
+    <p class="flow-text">No survey is available.</p>
+{% endif %}
+
+{% endblock %}
