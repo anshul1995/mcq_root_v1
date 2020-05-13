@@ -17,11 +17,11 @@
         <form action="{% url 'polls:submit' student.id %}" method="post" class="col s12" id="main-quiz">
             {% csrf_token %}
             <div class="collection">
-                <div id="questions-list">
+                <div id="questions-list" class="collection-item grey lighten-5">
                     {% include "polls/list_questions.html" with offset="0" %}
                 </div>
 
-                <div id="create-quiz-form">
+                <div id="create-quiz-form" class="collection-item grey lighten-5">
                     {% if student.group == 'G2' or student.group == 'G5' %}
                         {% include "polls/create_mcq_form.html" %}
                     {% endif %}
