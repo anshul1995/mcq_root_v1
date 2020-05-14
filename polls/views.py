@@ -10,6 +10,7 @@ from django.views.decorators.http import require_http_methods, require_POST
 import random
 import codecs
 import json
+import logging
 
 from .models import *
 # from .models import Question, Choice, Student, Student_Choice, Student_Question, Student_Response, Survey_Choice, Survey_Question
@@ -89,10 +90,10 @@ def survey(request, student_id):
         question_type=Survey_Question.TYPE1)
     if student.group != Student.GROUP1:
         survey_question_list = survey_question_list.union(
-            Survey_Question.objects.filter(question_type=Question.TYPE2))
+            Survey_Question.objects.filter(question_type=Survey_Question.TYPE2))
     if student.group != Student.GROUP1 and student.group != Student.GROUP2:
         survey_question_list = survey_question_list.union(
-            Survey_Question.objects.filter(question_type=Question.TYPE3))
+            Survey_Question.objects.filter(question_type=Survey_Question.TYPE3))
     context = {'survey_question_list': survey_question_list, 'student': student}
     return render(request, 'polls/STAGE2/survey.html', context)
 
@@ -106,24 +107,26 @@ def submit_survey(request, student_id):
         return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
     else:
         choice_map = {
-            'CHOICE1' : 'C1',
-            'CHOICE2' : 'C2',
-            'CHOICE3' : 'C3',
-            'CHOICE4' : 'C4',
-            'CHOICE5' : 'C5'
+            'CHOICE1': Student_Survey_Response.CHOICE1,
+            'CHOICE2': Student_Survey_Response.CHOICE2,
+            'CHOICE3': Student_Survey_Response.CHOICE3,
+            'CHOICE4': Student_Survey_Response.CHOICE4,
+            'CHOICE5': Student_Survey_Response.CHOICE5
         }
         for key, value in request.POST.items():
             if key.startswith('survey_'):
                 question_id = int(value.split(',')[0])
                 survey_choice = value.split(',')[1]
+                print(survey_choice)
                 survey_choice_id = choice_map[survey_choice]
+                print(survey_choice_id)
                 survey_question = Survey_Question.objects.get(id=question_id)
                 try:
                     student_survey_response = Student_Survey_Response(
-                        student_id=student, question_id=survey_question, choice_id=survey_choice_id)
+                        student_id=student, survey_question_id=survey_question, survey_choice_id=survey_choice_id)
                     student_survey_response.save()
                 except Exception:
-                    pass
+                    logging.error("Could not save survey response for "+student)
         student.stage = Student.STAGE3
         student.save()
         return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
