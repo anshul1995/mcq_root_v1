@@ -100,12 +100,33 @@ def survey(request, student_id):
 @require_POST
 def submit_survey(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
-    if student.stage == Student.STAGE2:
-        return HttpResponseRedirect(reverse('polls:survey', args=(student.id,)))
+    if student.stage == Student.STAGE1:
+        return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
     elif student.stage == Student.STAGE3:
         return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
     else:
-        pass
+        choice_map = {
+            'CHOICE1' : 'C1',
+            'CHOICE2' : 'C2',
+            'CHOICE3' : 'C3',
+            'CHOICE4' : 'C4',
+            'CHOICE5' : 'C5'
+        }
+        for key, value in request.POST.items():
+            if key.startswith('survey_'):
+                question_id = int(value.split(',')[0])
+                survey_choice = value.split(',')[1]
+                survey_choice_id = choice_map[survey_choice]
+                survey_question = Survey_Question.objects.get(id=question_id)
+                try:
+                    student_survey_response = Student_Survey_Response(
+                        student_id=student, question_id=survey_question, choice_id=survey_choice_id)
+                    student_survey_response.save()
+                except Exception:
+                    pass
+        student.stage = Student.STAGE3
+        student.save()
+        return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
 
 
 def results(request, student_id):
