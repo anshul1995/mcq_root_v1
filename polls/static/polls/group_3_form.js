@@ -10,7 +10,7 @@ $(function () {
             data: { choice: $('#' + this.id).attr('value') },
             success: function (result) {
                 $('#questions-list').append(result.append_question_list);
-                $('#create-quiz-form').append(result.create_mcq_form);
+                $('#questions-list').append(result.create_mcq_form);
                 $('#submit-quiz').append(result.submit);
                 $(".G3-choice").remove()
             },

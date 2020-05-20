@@ -46,7 +46,7 @@ def quiz(request, student_id):
         latest_question_list = latest_question_list.union(
             Question.objects.filter(question_type=Question.TYPE2))
     context = {'latest_question_list': latest_question_list, 'student': student}
-    return render(request, 'polls/STAGE1/quiz_dynamic.html', context)
+    return render(request, 'polls/STAGE1/quiz_dynamic_individual.html', context)
 
 
 @require_POST
@@ -64,13 +64,13 @@ def g3_choice(request, student_id):
         else:
             student.group = Student.GROUP5
             form = loader.render_to_string(
-                'polls/STAGE1/create_mcq_form.html', {})
+                'polls/STAGE1/create_mcq_form_wrapper.html', {})
         student.save()
     submit = loader.render_to_string(
         'polls/STAGE1/submit-quiz-button.html', {})
 
     response_data['append_question_list'] = loader.render_to_string(
-        'polls/STAGE1/list_questions.html', {'latest_question_list': latest_question_list, 'offset': 6})
+        'polls/STAGE1/list_questions_individual.html', {'latest_question_list': latest_question_list, 'offset': 6})
     response_data['create_mcq_form'] = form
     response_data['submit'] = submit
 
@@ -117,9 +117,7 @@ def submit_survey(request, student_id):
             if key.startswith('survey_'):
                 question_id = int(value.split(',')[0])
                 survey_choice = value.split(',')[1]
-                print(survey_choice)
                 survey_choice_id = choice_map[survey_choice]
-                print(survey_choice_id)
                 survey_question = Survey_Question.objects.get(id=question_id)
                 try:
                     student_survey_response = Student_Survey_Response(

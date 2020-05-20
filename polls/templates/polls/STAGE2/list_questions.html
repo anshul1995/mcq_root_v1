@@ -1,57 +1,57 @@
 {% for question in survey_question_list %}
 <div class="collection-item grey lighten-5 row">
-    <span class="flow-text col s12 m2">Q{{ forloop.counter }}. {{ question.question_text }}</span>
+    <span class="flow-text col s12 m7">Q{{ forloop.counter }}. {{ question.question_text }}</span>
     <p>
-        <label class="col s12 m2">
+        <label class="col s12 m1">
             <input type="radio" name="survey_{{ question.id }}" value="{{ question.id }},CHOICE1"
                 class="with-gap umblue" required>
             <span>
                 <span class="black-text hide-on-small-only"></span>
-                <span class="black-text hide-on-med-and-up">Strongly disagree</span>
+                <span class="black-text hide-on-med-and-up flow-text">Strongly disagree</span>
             </span>
         </label>
     </p>
 
     <p>
-        <label class="col s12 m2">
+        <label class="col s12 m1">
             <input type="radio" name="survey_{{ question.id }}" value="{{ question.id }},CHOICE2"
                 class="with-gap umblue" required>
             <span>
                 <span class="black-text hide-on-small-only"></span>
-                <span class="black-text hide-on-med-and-up">Somewhat disagree</span>
+                <span class="black-text hide-on-med-and-up flow-text">Somewhat disagree</span>
             </span>
         </label>
     </p>
 
     <p>
-        <label class="col s12 m2">
+        <label class="col s12 m1">
             <input type="radio" name="survey_{{ question.id }}" value="{{ question.id }},CHOICE3"
                 class="with-gap umblue" required>
             <span>
                 <span class="black-text hide-on-small-only"></span>
-                <span class="black-text hide-on-med-and-up">Neither agree nor disagree</span>
+                <span class="black-text hide-on-med-and-up flow-text">Neither agree nor disagree</span>
             </span>
         </label>
     </p>
 
     <p>
-        <label class="col s12 m2">
+        <label class="col s12 m1">
             <input type="radio" name="survey_{{ question.id }}" value="{{ question.id }},CHOICE4"
                 class="with-gap umblue" required>
             <span>
                 <span class="black-text hide-on-small-only"></span>
-                <span class="black-text hide-on-med-and-up">Somewhat agree</span>
+                <span class="black-text hide-on-med-and-up flow-text">Somewhat agree</span>
             </span>
         </label>
     </p>
 
     <p>
-        <label class="col s12 m2">
+        <label class="col s12 m1">
             <input type="radio" name="survey_{{ question.id }}" value="{{ question.id }},CHOICE5"
                 class="with-gap umblue" required>
             <span>
                 <span class="black-text hide-on-small-only"></span>
-                <span class="black-text hide-on-med-and-up">Strongly agree</span>
+                <span class="black-text hide-on-med-and-up flow-text">Strongly agree</span>
             </span>
         </label>
     </p>
