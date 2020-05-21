@@ -152,3 +152,12 @@ class Student_Survey_Response(models.Model):
 
     def __str__(self):
         return str(self.student_id) + ' : ' + str(self.survey_question_id) + ' - ' + str(self.survey_choice_id)
+
+class Log(models.Model):
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now_add=True)
+    element_type = models.CharField(max_length=100)
+    action = models.CharField(max_length=100)
+    element_id = models.CharField(max_length=100)
+    def __str__(self):
+        return str(self.student_id) + ' : ' + str(self.action) + ' ' + str(self.element_type) + ' ' + str(self.element_id)

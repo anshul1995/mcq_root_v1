@@ -2,12 +2,19 @@ $(function () {
 
     $("#G3-answer, #G3-create").on("click", function (e) {
         e.preventDefault();
-        $(".G3-choice").hide()
-        console.log("submitting G3 choice!")  // sanity check
+        $(".G3-choice").hide();
+        console.log("submitting G3 choice!!!!!");  // sanity check
+        var btn = $('#' + this.id).attr('value');
+        console.log(btn);
         $.ajax({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            },
             type: "POST",
             url: window.location.pathname+"G3-choice/",
-            data: { choice: $('#' + this.id).attr('value') },
+            data: { choice: btn },
             success: function (result) {
                 $('#questions-list').append(result.append_question_list);
                 $('#questions-list').append(result.create_mcq_form);
@@ -17,6 +24,20 @@ $(function () {
             error: function (result) {
                 alert('error');
                 $(".G3-choice").show()
+            }
+        });
+        $.ajax({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            },
+            type: "POST",
+            url: window.location.pathname + "quiz-log/",
+            data: {
+                type: 'group 3 choice',
+                action: btn,
+                element_id: btn
             }
         });
     });
@@ -47,12 +68,12 @@ $(function () {
         // these HTTP methods do not require CSRF protection
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }
-    $.ajaxSetup({
-        beforeSend: function (xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        }
-    });
+    // $.ajaxSetup({
+    //     beforeSend: function (xhr, settings) {
+    //         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+    //             xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    //         }
+    //     }
+    // });
 
 });

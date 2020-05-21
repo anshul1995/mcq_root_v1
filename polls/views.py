@@ -50,6 +50,30 @@ def quiz(request, student_id):
 
 
 @require_POST
+def quiz_log(request, student_id):
+    # now = timezone.now()
+    student = get_object_or_404(Student, pk=student_id)
+    element_type = request.POST.get('type')
+    action = request.POST.get('action')
+    element_id = request.POST.get('element_id')
+    if element_type == 'choice':
+        choice_id = element_id.split(',')[1]
+        choice = get_object_or_404(Choice, pk=choice_id)
+        append = "correct" if choice.is_correct else "incorrect"
+        action = action + " " + append
+    # print(element_type+" "+element_id+" "+action)
+    try:
+        log = Log(student_id=student, element_type=element_type,
+                  action=action, element_id=element_id)
+        log.save()
+    except Exception:
+        logging.error("Could not log for "+student)
+    return HttpResponse(
+        json.dumps({}),
+        content_type="application/json"
+    )
+
+@require_POST
 def g3_choice(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
     response_data = {}
