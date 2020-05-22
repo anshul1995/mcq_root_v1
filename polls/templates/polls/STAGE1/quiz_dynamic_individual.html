@@ -8,9 +8,41 @@
 {% if latest_question_list %}
 
 <div class="row">
-    <p class="flow-text">
+    <h6 class="col s12">
         Hello {{ student.name }}. Please answer the questions below.
-    </p>
+    </h6>
+    <div class="col s12">
+        {% if student.group == 'G1' %}
+        <p>
+            Please answer the following multiple-choice questions (MCQs), indicating one correct
+            response for each MCQ. Each MCQ is worth 1 point and no points will be deducted for
+            incorrect responses. There are 10 MCQs in total.<br>
+            You will have to answer all the questions to be able to submit the assignment. If you don't
+            know the answer to a question, please select the option "I don't know the answer to this
+            question" rather than making a random guess.
+        </p>
+        {% elif student.group == 'G2' %}
+        <p>
+            This assignment consists of 2 parts, with part 1 consisting of 6 Multiple Choice Questions
+            (MCQs) and part 2 consisting of a question-generation problem. You will have to answer all
+            the questions to be able to submit the assignment. <br>
+            In part 1, please answer the MCQs by indicating one correct response for each MCQ. Each MCQ
+            is worth 1 point. If you don't know the answer to a question, please select the option "I
+            don't know the answer to this question" rather than making a random guess.
+
+        </p>
+        {% else %}
+        <p>
+            This assignment consists of 2 parts, with part 1 consisting of 6 Multiple Choice Questions
+            (MCQs) and part 2 consisting of a choice between 4 more MCQs and a question-generation
+            problem. You will have to answer all the questions to be able to submit the assignment. <br>
+            In part 1, please answer the MCQs by indicating one correct response for each MCQ. Each MCQ
+            is worth 1 point. If you don't know the answer to a question, please select the option "I
+            don't know the answer to this question" rather than making a random guess.
+
+        </p>
+        {% endif %}
+    </div>
 </div>
 
 <div class="row">
@@ -18,40 +50,6 @@
         {% csrf_token %}
         <ul class="collapsible" id="questions-list">
 
-            <li>
-                <div class="collapsible-text">
-                    {% if student.group == 'G1' %}
-                        <p>
-                            Please answer the following multiple-choice questions (MCQs), indicating one correct
-                            response for each MCQ. Each MCQ is worth 1 point and no points will be deducted for
-                            incorrect responses. There are 10 MCQs in total.<br>
-                            You will have to answer all the questions to be able to submit the assignment. If you don't
-                            know the answer to a question, please select the option "I don't know the answer to this
-                            question" rather than making a random guess.
-                        </p>
-                    {% elif student.group == 'G2' %}
-                        <p>
-                            This assignment consists of 2 parts, with part 1 consisting of 6 Multiple Choice Questions
-                            (MCQs) and part 2 consisting of a question-generation problem. You will have to answer all
-                            the questions to be able to submit the assignment. <br>
-                            In part 1, please answer the MCQs by indicating one correct response for each MCQ. Each MCQ
-                            is worth 1 point. If you don't know the answer to a question, please select the option "I
-                            don't know the answer to this question" rather than making a random guess.
-
-                        </p>
-                    {% else %}
-                        <p>
-                            This assignment consists of 2 parts, with part 1 consisting of 6 Multiple Choice Questions
-                            (MCQs) and part 2 consisting of a choice between 4 more MCQs and a question-generation
-                            problem. You will have to answer all the questions to be able to submit the assignment. <br>
-                            In part 1, please answer the MCQs by indicating one correct response for each MCQ. Each MCQ
-                            is worth 1 point. If you don't know the answer to a question, please select the option "I
-                            don't know the answer to this question" rather than making a random guess.
-
-                        </p>
-                    {% endif %}
-                </div>
-            </li>
             {% include "polls/STAGE1/list_questions_individual.html" with offset="0" %}
 
             {% if student.group == 'G2' or student.group == 'G5' %}
