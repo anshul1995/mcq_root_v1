@@ -25,7 +25,14 @@ def index(request):
         f = LoginForm(request.POST)
         if f.is_valid():
             student = f.save()
-            student.group = random.choice(
+            if student.name.startswith('1'):
+                student.group = Student.GROUP1
+            elif student.name.startswith('2'):
+                student.group = Student.GROUP2
+            elif student.name.startswith('3'):
+                student.group = Student.GROUP3
+            else:
+                student.group = random.choice(
                 [Student.GROUP1, Student.GROUP2, Student.GROUP3])
             student.stage = Student.STAGE1
             student.save()
@@ -196,14 +203,14 @@ def submit_quiz(request, student_id):
                     pass
         if student.group == Student.GROUP2 or student.group == Student.GROUP5:
             student_question = Student_Question()
-            student_question.question_text = request.POST['student_question']
+            student_question.question_text = request.POST.get('student_question')
             student_question.by_student = student
-            student_question.explanation_text = request.POST['student_explanation']
+            student_question.explanation_text = request.POST.get('student_explanation')
             student_question.save()
-            for i in range(1,6):
-                if request.POST['student_choice_'+str(i)] != '':
+            for i in range(1,5):
+                if request.POST.get('student_choice_'+str(i)) != '':
                     student_choice = Student_Choice()
-                    student_choice.choice_text = request.POST['student_choice_'+str(i)]
+                    student_choice.choice_text = request.POST.get('student_choice_'+str(i))
                     student_choice.question = student_question
                     if i == 1:
                         student_choice.is_correct = True

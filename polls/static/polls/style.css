@@ -13,6 +13,16 @@
     padding: 2.5%;
 }
 
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
 [type="radio"]:checked+label::after,
 [type="radio"].with-gap:checked+label::after {
     background-color: #00274C !important;

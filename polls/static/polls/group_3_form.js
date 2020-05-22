@@ -18,6 +18,8 @@ $(function () {
             success: function (result) {
                 $('#questions-list').append(result.append_question_list);
                 $('#questions-list').append(result.create_mcq_form);
+                $('.tooltipped').tooltip();
+                $('select').formSelect();
                 $('#submit-quiz').append(result.submit);
                 $(".G3-choice").remove()
             },

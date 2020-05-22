@@ -3,7 +3,8 @@
 
     <div class="row">
         <div class="input-field col s12">
-            <textarea class="materialize-textarea log-text" id="student_question" name="student_question"
+            <textarea class="materialize-textarea log-text tooltipped" id="student_question" name="student_question"
+                data-position="bottom" data-tooltip="Make sure that the question is clear and not ambiguous!"
                 required></textarea>
             <label for="student_question">Question</label>
             <span class="helper-text">Required</span>
@@ -12,8 +13,8 @@
 
     <div class="row">
         <div class="input-field col s12">
-            <textarea class="materialize-textarea log-text" id="student_choice_1" name="student_choice_1"
-                required></textarea>
+            <textarea class="materialize-textarea log-text tooltipped" id="student_choice_1" name="student_choice_1"
+                data-position="bottom" data-tooltip="Make sure that this is the correct answer!" required></textarea>
             <label for="student_choice_1">Correct Choice</label>
             <span class="helper-text">Required</span>
         </div>
@@ -21,7 +22,8 @@
 
     <div class="row">
         <div class="input-field col s12">
-            <textarea class="materialize-textarea log-text" id="student_choice_2" name="student_choice_2"
+            <textarea class="materialize-textarea log-text tooltipped" id="student_choice_2" name="student_choice_2"
+                data-position="bottom" data-tooltip="Make sure that this is an incorrect alternative!"
                 required></textarea>
             <label for="student_choice_2">Incorrect Choice 1</label>
             <span class="helper-text">Required</span>
@@ -30,7 +32,8 @@
 
     <div class="row">
         <div class="input-field col s12">
-            <textarea class="materialize-textarea log-text" id="student_choice_3" name="student_choice_3"
+            <textarea class="materialize-textarea log-text tooltipped" id="student_choice_3" name="student_choice_3"
+                data-position="bottom" data-tooltip="Make sure that this is an incorrect alternative!"
                 required></textarea>
             <label for="student_choice_3">Incorrect Choice 2</label>
             <span class="helper-text">Required</span>
@@ -39,7 +42,8 @@
 
     <div class="row">
         <div class="input-field col s12">
-            <textarea class="materialize-textarea log-text" id="student_choice_4" name="student_choice_4"
+            <textarea class="materialize-textarea log-text tooltipped" id="student_choice_4" name="student_choice_4"
+                data-position="bottom" data-tooltip="Make sure that this is an incorrect alternative!"
                 required></textarea>
             <label for="student_choice_4">Incorrect Choice 3</label>
             <span class="helper-text">Required</span>
@@ -48,10 +52,33 @@
 
     <div class="row">
         <div class="input-field col s12">
-            <textarea class="materialize-textarea log-text" id="student_explanation" name="student_explanation"
-                required></textarea>
+            <textarea class="materialize-textarea log-text tooltipped" id="student_explanation" name="student_explanation"
+                data-position="bottom" data-tooltip="Your explanation should serve to help any student who is unable to
+                answer the MCQ incorrectly." required></textarea>
             <label for="student_explanation">Explanation</label>
             <span class="helper-text">Required</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s12">
+            <select multiple required>
+                <option value="" disabled>Topics:</option>
+                <option value="1">Pandas series datas structire</option>
+                <option value="2">Querying a series data structire</option>
+                <option value="3">Pandas indexing operators, loc and iloc</option>
+                <option value="4">Pandas dataframes </option>
+                <option value="5">Dataframe axis</option>
+                <option value="6">Creating and using pandas dataFrames to represent raw data</option>
+                <option value="7">Adding new values to dataframes</option>
+                <option value="8">Merging dataframes (outer joins, inner joins)</option>
+                <option value="9">Group by</option>
+                <option value="10">Pivot table</option>
+                <option value="11">Time series data</option>
+                <option value="12">Storing dataframes </option>
+                <option value="13">Other</option>
+            </select>
+            <label>Choose topics relevant to your question</label>
         </div>
     </div>
 </div>

@@ -1,4 +1,6 @@
 $(function () {
+    $('.tooltipped').tooltip();
+    $('select').formSelect();
     $('.collapsible').collapsible({
         onOpenEnd: function (e) {
             // console.log('open '+$(e).children('div.collapsible-header').attr('value'));
