@@ -3,7 +3,7 @@
     <li>
         <div class="collapsible-header log-question" value="{{ question.id }}">Q{{ forloop.counter|add:offset }}</div>
         <div class="collapsible-body grey lighten-5">
-            <span class="flow-text">{{ question.question_text }}</span>
+            <p class="question-text">{{ question.question_text|safe }}</p>
             {% for choice in question.choice_set.all %}
             <p>
                 <label>

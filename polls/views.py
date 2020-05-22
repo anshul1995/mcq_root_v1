@@ -74,7 +74,7 @@ def quiz_log(request, student_id):
                   action=action, element_id=element_id)
         log.save()
     except Exception:
-        logging.error("Could not log for "+student)
+        pass
     return HttpResponse(
         json.dumps({}),
         content_type="application/json"

@@ -17,10 +17,45 @@
     <form action="{% url 'polls:submit_quiz' student.id %}" method="post" class="col s12" id="main-quiz">
         {% csrf_token %}
         <ul class="collapsible" id="questions-list">
+
+            <li>
+                <div class="collapsible-text">
+                    {% if student.group == 'G1' %}
+                        <p>
+                            Please answer the following multiple-choice questions (MCQs), indicating one correct
+                            response for each MCQ. Each MCQ is worth 1 point and no points will be deducted for
+                            incorrect responses. There are 10 MCQs in total.<br>
+                            You will have to answer all the questions to be able to submit the assignment. If you don't
+                            know the answer to a question, please select the option "I don't know the answer to this
+                            question" rather than making a random guess.
+                        </p>
+                    {% elif student.group == 'G2' %}
+                        <p>
+                            This assignment consists of 2 parts, with part 1 consisting of 6 Multiple Choice Questions
+                            (MCQs) and part 2 consisting of a question-generation problem. You will have to answer all
+                            the questions to be able to submit the assignment. <br>
+                            In part 1, please answer the MCQs by indicating one correct response for each MCQ. Each MCQ
+                            is worth 1 point. If you don't know the answer to a question, please select the option "I
+                            don't know the answer to this question" rather than making a random guess.
+
+                        </p>
+                    {% else %}
+                        <p>
+                            This assignment consists of 2 parts, with part 1 consisting of 6 Multiple Choice Questions
+                            (MCQs) and part 2 consisting of a choice between 4 more MCQs and a question-generation
+                            problem. You will have to answer all the questions to be able to submit the assignment. <br>
+                            In part 1, please answer the MCQs by indicating one correct response for each MCQ. Each MCQ
+                            is worth 1 point. If you don't know the answer to a question, please select the option "I
+                            don't know the answer to this question" rather than making a random guess.
+
+                        </p>
+                    {% endif %}
+                </div>
+            </li>
             {% include "polls/STAGE1/list_questions_individual.html" with offset="0" %}
 
             {% if student.group == 'G2' or student.group == 'G5' %}
-                {% include "polls/STAGE1/create_mcq_form_wrapper.html" %}</div>
+                {% include "polls/STAGE1/create_mcq_form_wrapper.html" %}
             {% endif %}
         </ul>
 
@@ -33,6 +68,19 @@
 </div>
 
 {% if student.group == 'G3' %}
+<div class="row G3-choice" id="G3-choice-div-text">
+    <p class="col s12">
+        This week you learnt about Pandas Series and Dataframes. Now, we want to give you the opportunity to use your
+        newly acquired knowledge and make a useful contribution for future students, that can help them learn better!
+        This activity would also encourage the development of your higher-order cognitive skills and lead to a deeper
+        understanding of these concepts!<br>
+        Thus, you have the opportunity to create an MCQ supported by an explanation of how to arrive at the correct
+        answer. Alternatively, you can answer 4 more MCQs. If you consent, we would also like to include the created MCQ
+        for future question banks or assessments.<br>
+        <strong>Please note that you only have the option to make this choice once and after clicking on the activity of
+            your choice, your decision would be final.</strong>
+    </p>
+</div>
 <div class="row" id="G3-choice-div">
     <a class="waves-effect waves-light btn-large umblue col s4 offset-s1 m3 offset-m2 G3-choice" id="G3-answer"
         value="G4">Answer 4 more MCQs</a>
