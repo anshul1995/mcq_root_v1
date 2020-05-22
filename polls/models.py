@@ -55,10 +55,12 @@ class Survey_Question(Base_Question):
     TYPE1 = 'T1'
     TYPE2 = 'T2'
     TYPE3 = 'T3'
+    TYPE4 = 'T4'
     QUESTION_TYPE_CHOICES = [
-        (TYPE1, 'For groups 1, 2 and 3'),
-        (TYPE2, 'For groups 2 and 3'),
-        (TYPE3, 'For groups 3'),
+        (TYPE1, 'For groups 1, 2, 4 and 5'),
+        (TYPE2, 'For groups 2, 4 and 5'),
+        (TYPE3, 'For group 4'),
+        (TYPE4, 'For group 5'),
     ]
     question_type = models.CharField(
         max_length=2,

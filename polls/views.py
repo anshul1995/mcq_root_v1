@@ -122,9 +122,12 @@ def survey(request, student_id):
     if student.group != Student.GROUP1:
         survey_question_list = survey_question_list.union(
             Survey_Question.objects.filter(question_type=Survey_Question.TYPE2))
-    if student.group != Student.GROUP1 and student.group != Student.GROUP2:
+    if student.group == Student.GROUP4:
         survey_question_list = survey_question_list.union(
             Survey_Question.objects.filter(question_type=Survey_Question.TYPE3))
+    if student.group == Student.GROUP5:
+        survey_question_list = survey_question_list.union(
+            Survey_Question.objects.filter(question_type=Survey_Question.TYPE4))
     context = {'survey_question_list': survey_question_list, 'student': student}
     return render(request, 'polls/STAGE2/survey.html', context)
 

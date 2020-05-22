@@ -83,7 +83,7 @@ $(function () {
             url: window.location.pathname + "quiz-log/",
             data: {
                 type: 'create mcq text',
-                action: 'blue',
+                action: 'blur',
                 element_id: $(this).attr('name')
             }
         });

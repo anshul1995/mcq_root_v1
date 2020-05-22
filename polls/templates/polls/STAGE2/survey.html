@@ -27,7 +27,25 @@
                     {% include "polls/STAGE2/list_questions.html" %}
                 </div>
             </div>
-
+            {% if student.group == 'G4' %}
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea class="materialize-textarea" name="choice_text"></textarea>
+                        <label for="choice_text">Type here</label>
+                        <span class="helper-text">Are there any other reasons behind your choice to not create an MCQ?
+                            If yes, please explain as elaborately as possible.</span>
+                    </div>
+                </div>
+            {% elif student.group == 'G5' %}
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea class="materialize-textarea" name="choice_text"></textarea>
+                        <label for="choice_text">Type here</label>
+                        <span class="helper-text">Are there any other reasons behind your choice to create an MCQ? If
+                            yes, please explain as elaborately as possible.</span>
+                    </div>
+                </div>
+            {% endif %}
             <div id="submit-survey">
                 <button class="btn waves-effect waves-light umblue" type="submit" name="action">Submit survey</button>
             </div>
