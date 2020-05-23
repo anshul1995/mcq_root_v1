@@ -15,7 +15,8 @@ $(function () {
                 data: {
                     type: 'question',
                     action: 'open',
-                    element_id: $(e).children('div.collapsible-header').attr('value')
+                    element_id: $(e).children('div.collapsible-header').attr('value'),
+                    timestamp: Date.now()
                 }
             });
         },
@@ -32,7 +33,8 @@ $(function () {
                 data: {
                     type: 'question',
                     action: 'close',
-                    element_id: $(e).children('div.collapsible-header').attr('value')
+                    element_id: $(e).children('div.collapsible-header').attr('value'),
+                    timestamp: Date.now()
                 }
             });
         }
@@ -50,7 +52,8 @@ $(function () {
             data: {
                 type: 'choice',
                 action: 'select',
-                element_id: $(this).attr('value')
+                element_id: $(this).attr('value'),
+                timestamp: Date.now()
             }
         });
     })
@@ -67,7 +70,8 @@ $(function () {
             data: {
                 type: 'create mcq text',
                 action: 'focus',
-                element_id: $(this).attr('name')
+                element_id: $(this).attr('name'),
+                timestamp: Date.now()
             }
         });
     })
@@ -84,7 +88,8 @@ $(function () {
             data: {
                 type: 'create mcq text',
                 action: 'blur',
-                element_id: $(this).attr('name')
+                element_id: $(this).attr('name'),
+                timestamp: Date.now()
             }
         });
     })

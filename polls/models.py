@@ -104,6 +104,8 @@ class Student(models.Model):
         choices=GROUP_TYPE_CHOICES,
         default='G'+str(random.randrange(1,4)),
     )
+    consent_create_mcq = models.BooleanField(default=False)
+    consent_survey = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -154,6 +156,14 @@ class Student_Survey_Response(models.Model):
 
     def __str__(self):
         return str(self.student_id) + ' : ' + str(self.survey_question_id) + ' - ' + str(self.survey_choice_id)
+
+
+class Student_Survey_Additional_Text(models.Model):
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    text = models.CharField(max_length=2000)
+
+    def __str__(self):
+        return str(self.student_id) + ' : ' + self.text
 
 class Log(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)

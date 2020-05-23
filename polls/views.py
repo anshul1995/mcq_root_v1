@@ -159,6 +159,15 @@ def submit_survey(request, student_id):
                     student_survey_response.save()
                 except Exception:
                     logging.error("Could not save survey response for "+student)
+        consent_survey = request.POST.get('consent_survey') == "True"
+        choice_text = request.POST.get('choice_text', '')
+        if choice_text:
+            try:
+                addn_text = Student_Survey_Additional_Text(student_id = student, text = choice_text)
+                addn_text.save()
+            except Exception:
+                    logging.error("Could not save survey response additional text for "+student)
+        student.consent_survey = consent_survey
         student.stage = Student.STAGE3
         student.save()
         return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
@@ -205,6 +214,9 @@ def submit_quiz(request, student_id):
                 except Exception:
                     pass
         if student.group == Student.GROUP2 or student.group == Student.GROUP5:
+            student_consent_create_mcq = request.POST.get(
+                'consent_create_mcq') == "True"
+            student.consent_create_mcq = student_consent_create_mcq
             student_question = Student_Question()
             student_question.question_text = request.POST.get('student_question')
             student_question.by_student = student

@@ -1,6 +1,6 @@
 {% for question in survey_question_list %}
 <div class="collection-item grey lighten-5 row">
-    <span class="col s12 m7">Q{{ forloop.counter }}. {{ question.question_text }}</span>
+    <span class="col s12 m7">{{ question.question_text|safe }}</span>
     <p>
         <label class="col s12 m1">
             <input type="radio" name="survey_{{ question.id }}" value="{{ question.id }},CHOICE1"

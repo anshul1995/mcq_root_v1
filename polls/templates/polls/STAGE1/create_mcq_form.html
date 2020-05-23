@@ -1,5 +1,17 @@
 <div class="collection-item grey lighten-5">
     <div class="row">
+        {% if student.group == 'G2' %}
+            <p class="col s12">
+                This week you mastered …. concepts. Now, we want to give you the opportunity to use your newly acquired
+                knowledge and make a useful contribution for future students, that can help them learn better! This
+                activity would also encourage the development of your higher-order cognitive skills and lead to a deeper
+                understanding of these concepts!
+                <br><br>
+                Thus, in part 2 of this assignment, you have to create an MCQ supported by an explanation of how to
+                arrive at the correct answer. If you consent, we would also like to include the created MCQ for future
+                question banks or assessments.
+            </p>
+        {% endif %}
         <p class="col s12">
             Create a Multiple choice question with one correct answer and 3 incorrect options. Please select 1 or more
             topics from the list on the right to create your MCQ. You just answered 6 MCQs which are all good examples
@@ -31,12 +43,34 @@
         </p>
         <p class="col s12">
             <strong>Grading:</strong> This exercise is worth 4 pts with the following break up:<br>
-            Question: 1 pt<br>
-            Correct answer: 0.5 pt<br>
+            Question: 1.5 pt<br>
+            Correct answer: 0.75 pt<br>
             Three incorrect options: 1 pt<br>
-            Explanation: 0.5 pt
+            Explanation: 0.75 pt
         </p>
     </div>
+
+       <div class="row">
+           <div class="input-field col s12">
+               <select multiple required>
+                   <option value="" disabled>Topics:</option>
+                   <option value="1">Pandas series datas structire</option>
+                   <option value="2">Querying a series data structire</option>
+                   <option value="3">Pandas indexing operators, loc and iloc</option>
+                   <option value="4">Pandas dataframes </option>
+                   <option value="5">Dataframe axis</option>
+                   <option value="6">Creating and using pandas dataFrames to represent raw data</option>
+                   <option value="7">Adding new values to dataframes</option>
+                   <option value="8">Merging dataframes (outer joins, inner joins)</option>
+                   <option value="9">Group by</option>
+                   <option value="10">Pivot table</option>
+                   <option value="11">Time series data</option>
+                   <option value="12">Storing dataframes </option>
+                   <option value="13">Other</option>
+               </select>
+               <label>Choose topics relevant to your question</label>
+           </div>
+       </div>
 
     <div class="row">
         <div class="input-field col s12">
@@ -98,24 +132,23 @@
     </div>
 
     <div class="row">
-        <div class="input-field col s12">
-            <select multiple required>
-                <option value="" disabled>Topics:</option>
-                <option value="1">Pandas series datas structire</option>
-                <option value="2">Querying a series data structire</option>
-                <option value="3">Pandas indexing operators, loc and iloc</option>
-                <option value="4">Pandas dataframes </option>
-                <option value="5">Dataframe axis</option>
-                <option value="6">Creating and using pandas dataFrames to represent raw data</option>
-                <option value="7">Adding new values to dataframes</option>
-                <option value="8">Merging dataframes (outer joins, inner joins)</option>
-                <option value="9">Group by</option>
-                <option value="10">Pivot table</option>
-                <option value="11">Time series data</option>
-                <option value="12">Storing dataframes </option>
-                <option value="13">Other</option>
-            </select>
-            <label>Choose topics relevant to your question</label>
-        </div>
+        <span class="col s12">Can I use the MCQ created by you for future research studies given that no personal
+            identifiers will be stored or linked back to you?</span>
+        <p>
+            <label class="col s12">
+                <input type="radio" name="consent_create_mcq" value="True" class="with-gap umblue" required>
+                <span>
+                    <span class="black-text">Yes</span>
+                </span>
+            </label>
+        </p>
+        <p>
+            <label class="col s12">
+                <input type="radio" name="consent_create_mcq" value="False" class="with-gap umblue" required>
+                <span>
+                    <span class="black-text">No</span>
+                </span>
+            </label>
+        </p>
     </div>
 </div>

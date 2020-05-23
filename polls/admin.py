@@ -74,6 +74,13 @@ class StudentLogInline(admin.TabularInline):
     extra = 0
 
 
+class StudentAdditionalTextInline(admin.TabularInline):
+    model = Student_Survey_Additional_Text
+    readonly_fields = ('student_id', 'text',)
+    can_delete = False
+    extra = 0
+
+
 class LogAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': [
@@ -85,12 +92,13 @@ class LogAdmin(admin.ModelAdmin):
 
 class StudentAdmin(admin.ModelAdmin):
     fieldsets = (
-        ('Student information', {'fields': ['name', 'stage', 'group', 'id']}),
+        ('Student information', {'fields': ['name', 'stage', 'group', 'id', 'consent_survey', 'consent_create_mcq']}),
     )
-    readonly_fields = ('id','name','stage',)
+    readonly_fields = ('id', 'name', 'stage', 'consent_survey', 'consent_create_mcq')
     inlines = [StudentResponseInline,
                StudentQuestionResponseInline,
                StudentSurveyResponseInline,
+               StudentAdditionalTextInline,
                StudentLogInline]
 
 admin.site.register(Question, QuestionAdmin)

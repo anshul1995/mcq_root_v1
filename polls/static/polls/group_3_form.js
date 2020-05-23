@@ -37,9 +37,10 @@ $(function () {
             type: "POST",
             url: window.location.pathname + "quiz-log/",
             data: {
-                type: 'group 3 choice',
+                type: 'group_3_choice',
                 action: btn,
-                element_id: btn
+                element_id: btn,
+                timestamp: Date.now()
             }
         });
     });

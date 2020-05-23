@@ -7,8 +7,19 @@
 
 {% if survey_question_list %}
     <div class="row">
-        <p class="flow-text">
-            Hello {{ student.name }}. Please answer the survey below.
+        <p class="col s12">
+            Hello {{ student.name }}! Your responses have been recorded! Your grades will soon reflect on your profile.
+        </p>
+        <p class="col s12">
+            Please answer the following survey questions to help us improve the design and content of MOOC assessments.
+            The survey will not take more than 5 minutes. Thank you in advance for your time!
+        </p>
+    </div>
+
+    <div class="row">
+        <p class="col s12">
+            <strong>Please indicate how true each of the following statements is for you, on a scale of (1) “strongly
+                disagree” to (5) “strongly agree” </strong>
         </p>
     </div>
 
@@ -27,27 +38,49 @@
                     {% include "polls/STAGE2/list_questions.html" %}
                 </div>
             </div>
-            {% if student.group == 'G4' %}
-                <div class="row">
+            
+            <div class="collection">
+                {% if student.group == 'G4' %}
+                <div class="collection-item grey lighten-5 row">
                     <div class="input-field col s12">
                         <textarea class="materialize-textarea" name="choice_text"></textarea>
-                        <label for="choice_text">Type here</label>
-                        <span class="helper-text">Are there any other reasons behind your choice to not create an MCQ?
-                            If yes, please explain as elaborately as possible.</span>
+                        <label for="choice_text" class="black-text">Are there any other reasons behind your choice to
+                            not create an MCQ? If yes, please explain as elaborately as possible.</label>
                     </div>
                 </div>
-            {% elif student.group == 'G5' %}
-                <div class="row">
+                {% elif student.group == 'G5' %}
+                <div class="collection-item grey lighten-5 row">
                     <div class="input-field col s12">
                         <textarea class="materialize-textarea" name="choice_text"></textarea>
-                        <label for="choice_text">Type here</label>
-                        <span class="helper-text">Are there any other reasons behind your choice to create an MCQ? If
-                            yes, please explain as elaborately as possible.</span>
+                        <label for="choice_text" class="black-text">Are there any other reasons behind your choice to
+                            create an MCQ? If yes, please explain as elaborately as possible.</label>
                     </div>
                 </div>
-            {% endif %}
+                {% endif %}
+                <div class="collection-item grey lighten-5 row">
+                    <span class="col s12">Can we use your anonymized survey responses as part of a research study? Your
+                        answer to this question will have no impact on your evaluation for this course.</span>
+                    <p>
+                        <label class="col s12">
+                            <input type="radio" name="consent_survey" value="True" class="with-gap umblue" required>
+                            <span>
+                                <span class="black-text">Yes</span>
+                            </span>
+                        </label>
+                    </p>
+                    <p>
+                        <label class="col s12">
+                            <input type="radio" name="consent_survey" value="False" class="with-gap umblue" required>
+                            <span>
+                                <span class="black-text">No</span>
+                            </span>
+                        </label>
+                    </p>
+                </div>
+            </div>
             <div id="submit-survey">
-                <button class="btn waves-effect waves-light umblue" type="submit" name="action">Submit survey</button>
+                <button class="btn waves-effect waves-light umblue" type="submit" name="action">Submit
+                    survey</button>
             </div>
         </form>
     </div>
