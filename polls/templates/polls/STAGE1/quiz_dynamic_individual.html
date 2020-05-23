@@ -7,63 +7,59 @@
 
 {% if latest_question_list %}
 
-<!-- <div class="row"> -->
-    <h6 class="row">
-        Hello {{ student.name }}!
-    </h6>
-    <p class="row">
-        {% if student.group == 'G1' %}
-        <span>
-            Please answer the following multiple-choice questions (MCQs), indicating one correct
-            response for each MCQ. Each MCQ is worth 1 point and no points will be deducted for
-            incorrect responses. There are 10 MCQs in total.<br><br>
-            You will have to answer all the questions to be able to submit the assignment. If you don't
-            know the answer to a question, please select the option "I don't know the answer to this
-            question" rather than making a random guess.
-        </span>
-        {% elif student.group == 'G2' %}
-        <span>
-            This assignment consists of 2 parts, with part 1 consisting of 6 Multiple Choice Questions
-            (MCQs) and part 2 consisting of a question-generation problem. You will have to answer all
-            the questions to be able to submit the assignment. <br><br>
-            In part 1, please answer the MCQs by indicating one correct response for each MCQ. Each MCQ
-            is worth 1 point. If you don't know the answer to a question, please select the option "I
-            don't know the answer to this question" rather than making a random guess.
+<h6 class="row">
+    Hello {{ student.name }}!
+</h6>
+<p class="row">
+    {% if student.group == 'G1' %}
+    <span>
+        Please answer the following multiple-choice questions (MCQs), indicating one correct
+        response for each MCQ. Each MCQ is worth 1 point and no points will be deducted for
+        incorrect responses. There are 10 MCQs in total.<br><br>
+        You will have to answer all the questions to be able to submit the assignment. If you don't
+        know the answer to a question, please select the option "I don't know the answer to this
+        question" rather than making a random guess.
+    </span>
+    {% elif student.group == 'G2' %}
+    <span>
+        This assignment consists of 2 parts, with part 1 consisting of 6 Multiple Choice Questions
+        (MCQs) and part 2 consisting of a question-generation problem. You will have to answer all
+        the questions to be able to submit the assignment. <br><br>
+        In part 1, please answer the MCQs by indicating one correct response for each MCQ. Each MCQ
+        is worth 1 point. If you don't know the answer to a question, please select the option "I
+        don't know the answer to this question" rather than making a random guess.
 
-        </span>
-        {% else %}
-        <span>
-            This assignment consists of 2 parts, with part 1 consisting of 6 Multiple Choice Questions
-            (MCQs) and part 2 consisting of a choice between 4 more MCQs and a question-generation
-            problem. You will have to answer all the questions to be able to submit the assignment. <br><br>
-            In part 1, please answer the MCQs by indicating one correct response for each MCQ. Each MCQ
-            is worth 1 point. If you don't know the answer to a question, please select the option "I
-            don't know the answer to this question" rather than making a random guess.
+    </span>
+    {% else %}
+    <span>
+        This assignment consists of 2 parts, with part 1 consisting of 6 Multiple Choice Questions
+        (MCQs) and part 2 consisting of a choice between 4 more MCQs and a question-generation
+        problem. You will have to answer all the questions to be able to submit the assignment. <br><br>
+        In part 1, please answer the MCQs by indicating one correct response for each MCQ. Each MCQ
+        is worth 1 point. If you don't know the answer to a question, please select the option "I
+        don't know the answer to this question" rather than making a random guess.
 
-        </span>
+    </span>
+    {% endif %}
+</p>
+
+<form action="{% url 'polls:submit_quiz' student.id %}" method="post" class="row" id="main-quiz">
+    {% csrf_token %}
+    <ul class="collapsible" id="questions-list">
+
+        {% include "polls/STAGE1/list_questions_individual.html" with offset="0" %}
+
+        {% if student.group == 'G2' or student.group == 'G5' %}
+        {% include "polls/STAGE1/create_mcq_form_wrapper.html" %}
         {% endif %}
-    </p>
-<!-- </div> -->
+    </ul>
 
-<!-- <div class="row"> -->
-    <form action="{% url 'polls:submit_quiz' student.id %}" method="post" class="row" id="main-quiz">
-        {% csrf_token %}
-        <ul class="collapsible" id="questions-list">
-
-            {% include "polls/STAGE1/list_questions_individual.html" with offset="0" %}
-
-            {% if student.group == 'G2' or student.group == 'G5' %}
-                {% include "polls/STAGE1/create_mcq_form_wrapper.html" %}
-            {% endif %}
-        </ul>
-
-        <div id="submit-quiz">
-            {% if student.group != 'G3' %}
-                {% include "polls/STAGE1/submit-quiz-button.html" %}
-            {% endif %}
-        </div>
-    </form>
-<!-- </div> -->
+    <div id="submit-quiz">
+        {% if student.group != 'G3' %}
+        {% include "polls/STAGE1/submit-quiz-button.html" %}
+        {% endif %}
+    </div>
+</form>
 
 {% if student.group == 'G3' %}
 <div class="row G3-choice" id="G3-choice-div-text">
