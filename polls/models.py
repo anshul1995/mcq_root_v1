@@ -44,6 +44,7 @@ class Question(Base_Question):
         choices=QUESTION_TYPE_CHOICES,
         default=TYPE1,
     )
+    sort_order = models.IntegerField(default=0)
 
 
 class Choice(Base_Choice):
@@ -67,6 +68,7 @@ class Survey_Question(Base_Question):
         choices=QUESTION_TYPE_CHOICES,
         default=TYPE1,
     )
+    sort_order = models.IntegerField(default=0)
 
 
 ######## STUDENT QUESTIONS ########
@@ -102,7 +104,7 @@ class Student(models.Model):
     group = models.CharField(
         max_length=2,
         choices=GROUP_TYPE_CHOICES,
-        default='G'+str(random.randrange(1,4)),
+        default='G1',
     )
     consent_create_mcq = models.BooleanField(default=False)
     consent_survey = models.BooleanField(default=False)

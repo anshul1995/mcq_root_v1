@@ -13,7 +13,7 @@ class ChoiceInline(admin.TabularInline):
 
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['question_text', 'question_type']}),
+        (None,               {'fields': ['question_text', 'question_type', 'sort_order']}),
         ('Date information', {'fields': [
          'pub_date'], 'classes': ['collapse']}),
     ]
@@ -23,7 +23,8 @@ class QuestionAdmin(admin.ModelAdmin):
 
 class SurveyQuestionAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['question_text', 'question_type']}),
+        (None,               {'fields': [
+         'question_text', 'question_type', 'sort_order']}),
         ('Date information', {'fields': [
          'pub_date'], 'classes': ['collapse']}),
     ]

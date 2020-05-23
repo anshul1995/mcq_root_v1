@@ -52,7 +52,8 @@ def quiz(request, student_id):
     if student.group == Student.GROUP1 or student.group == Student.GROUP4:
         latest_question_list = latest_question_list.union(
             Question.objects.filter(question_type=Question.TYPE2))
-    context = {'latest_question_list': latest_question_list, 'student': student}
+    context = {'latest_question_list': latest_question_list.order_by(
+        'sort_order'), 'student': student}
     return render(request, 'polls/STAGE1/quiz_dynamic_individual.html', context)
 
 
@@ -101,7 +102,8 @@ def g3_choice(request, student_id):
         'polls/STAGE1/submit-quiz-button.html', {})
 
     response_data['append_question_list'] = loader.render_to_string(
-        'polls/STAGE1/list_questions_individual.html', {'latest_question_list': latest_question_list, 'offset': 6})
+    'polls/STAGE1/list_questions_individual.html',
+    {'latest_question_list': latest_question_list.order_by('sort_order'), 'offset': 6})
     response_data['create_mcq_form'] = form
     response_data['submit'] = submit
 
@@ -124,10 +126,13 @@ def survey(request, student_id):
         survey_question_list = survey_question_list.union(
             Survey_Question.objects.filter(question_type=Survey_Question.TYPE2))
     if student.group == Student.GROUP4:
-        context['extra_question_list'] = Survey_Question.objects.filter(question_type=Survey_Question.TYPE3)
+        context['extra_question_list'] = Survey_Question.objects.filter(
+            question_type=Survey_Question.TYPE3).order_by('sort_order')
     if student.group == Student.GROUP5:
-        context['extra_question_list'] = Survey_Question.objects.filter(question_type=Survey_Question.TYPE4)
-    context['survey_question_list'] = survey_question_list
+        context['extra_question_list'] = Survey_Question.objects.filter(
+            question_type=Survey_Question.TYPE4).order_by('sort_order')
+    context['survey_question_list'] = survey_question_list.order_by(
+        'sort_order')
     return render(request, 'polls/STAGE2/survey.html', context)
 
 
