@@ -117,18 +117,17 @@ def survey(request, student_id):
         return HttpResponseRedirect(reverse('polls:quiz', args=(student.id,)))
     elif student.stage == Student.STAGE3:
         return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
+    context = {'student': student}
     survey_question_list = Survey_Question.objects.filter(
         question_type=Survey_Question.TYPE1)
     if student.group != Student.GROUP1:
         survey_question_list = survey_question_list.union(
             Survey_Question.objects.filter(question_type=Survey_Question.TYPE2))
     if student.group == Student.GROUP4:
-        survey_question_list = survey_question_list.union(
-            Survey_Question.objects.filter(question_type=Survey_Question.TYPE3))
+        context['extra_question_list'] = Survey_Question.objects.filter(question_type=Survey_Question.TYPE3)
     if student.group == Student.GROUP5:
-        survey_question_list = survey_question_list.union(
-            Survey_Question.objects.filter(question_type=Survey_Question.TYPE4))
-    context = {'survey_question_list': survey_question_list, 'student': student}
+        context['extra_question_list'] = Survey_Question.objects.filter(question_type=Survey_Question.TYPE4)
+    context['survey_question_list'] = survey_question_list
     return render(request, 'polls/STAGE2/survey.html', context)
 
 

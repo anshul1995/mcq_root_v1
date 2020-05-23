@@ -27,36 +27,75 @@
         <form action="{% url 'polls:submit_survey' student.id %}" method="post" class="col s12" id="main-survey">
             {% csrf_token %}
             <div class="collection">
-                <div class="hide-on-small-only row">
+                <div class="collection-item grey lighten-5 hide-on-small-only row">
                     <span class="black-text col m1 offset-m7">Strongly disagree</span>
                     <span class="black-text col m1">Somewhat disagree</span>
                     <span class="black-text col m1">Neither agree nor disagree</span>
                     <span class="black-text col m1">Somewhat agree</span>
                     <span class="black-text col m1">Strongly agree</span>
                 </div>
-                <div id="questions-list">
-                    {% include "polls/STAGE2/list_questions.html" %}
+                {% include "polls/STAGE2/list_questions.html" with questions_to_list=survey_question_list only %}
+            </div>
+            
+            {% if student.group == 'G4' and extra_question_list %}
+            <p class="row">
+                <strong>“I chose to answer 4 additional questions rather than create an MCQ because:”</strong>
+            </p>
+            <div class="collection">
+                <!-- <p class="collection-item grey lighten-5 hide-on-med-and-up row"> -->
+                <p class="collection-item grey lighten-5 row">
+                    <strong>“I chose to answer 4 additional questions rather than create an MCQ because:”</strong>
+                </p>
+                <div class="collection-item grey lighten-5 hide-on-small-only row">
+                    <span class="black-text col m7"><strong>“I chose to answer 4 additional questions rather than
+                            create an MCQ because:”</strong></span>
+                    <span class="black-text col m1">Strongly disagree</span>
+                    <span class="black-text col m1">Somewhat disagree</span>
+                    <span class="black-text col m1">Neither agree nor disagree</span>
+                    <span class="black-text col m1">Somewhat agree</span>
+                    <span class="black-text col m1">Strongly agree</span>
+                </div>
+                {% include "polls/STAGE2/list_questions.html" with questions_to_list=extra_question_list only %}
+                <div class="collection-item grey lighten-5 row">
+                    <div class="input-field col s12">
+                        <textarea class="materialize-textarea" name="choice_text"></textarea>
+                        <label for="choice_text" class="black-text">Are there any other reasons behind your choice
+                            to not create an MCQ? If yes, please explain as elaborately as possible.</label>
+                    </div>
                 </div>
             </div>
             
+            {% elif student.group == 'G5' and extra_question_list %}
+            <p class="row">
+                <strong>“I chose to create an MCQ rather than answer 4 additional questions because:”</strong>
+            </p>
             <div class="collection">
-                {% if student.group == 'G4' %}
+                <!-- <p class="collection-item grey lighten-5 hide-on-med-and-up row"> -->
+                <p class="collection-item grey lighten-5 row">
+                    <strong>“I chose to create an MCQ rather than answer 4 additional questions because:”</strong>
+                </p>
+                <div class="collection-item grey lighten-5 hide-on-small-only row">
+                    <span class="black-text col m7"><strong>“I chose to create an MCQ rather than answer 4
+                            additional questions because:”</strong></span>
+                    <span class="black-text col m1 offset-m7">Strongly disagree</span>
+                    <span class="black-text col m1">Somewhat disagree</span>
+                    <span class="black-text col m1">Neither agree nor disagree</span>
+                    <span class="black-text col m1">Somewhat agree</span>
+                    <span class="black-text col m1">Strongly agree</span>
+                </div>
+                {% include "polls/STAGE2/list_questions.html" with questions_to_list=extra_question_list only %}
                 <div class="collection-item grey lighten-5 row">
                     <div class="input-field col s12">
                         <textarea class="materialize-textarea" name="choice_text"></textarea>
-                        <label for="choice_text" class="black-text">Are there any other reasons behind your choice to
-                            not create an MCQ? If yes, please explain as elaborately as possible.</label>
+                        <label for="choice_text" class="black-text">Are there any other reasons behind your choice
+                            to create an MCQ? If yes, please explain as elaborately as possible.</label>
                     </div>
                 </div>
-                {% elif student.group == 'G5' %}
-                <div class="collection-item grey lighten-5 row">
-                    <div class="input-field col s12">
-                        <textarea class="materialize-textarea" name="choice_text"></textarea>
-                        <label for="choice_text" class="black-text">Are there any other reasons behind your choice to
-                            create an MCQ? If yes, please explain as elaborately as possible.</label>
-                    </div>
-                </div>
-                {% endif %}
+            </div>
+            
+            {% endif %}
+            
+            <div class="collection">
                 <div class="collection-item grey lighten-5 row">
                     <span class="col s12">Can we use your anonymized survey responses as part of a research study? Your
                         answer to this question will have no impact on your evaluation for this course.</span>
