@@ -49,11 +49,14 @@ def quiz(request, student_id):
         return HttpResponseRedirect(reverse('polls:results', args=(student.id,)))
     latest_question_list = Question.objects.filter(
         question_type=Question.TYPE1)
+    topics = Student_Question_Topic.objects.none()
     if student.group == Student.GROUP1 or student.group == Student.GROUP4:
         latest_question_list = latest_question_list.union(
             Question.objects.filter(question_type=Question.TYPE2))
+    elif student.group == Student.GROUP2 or student.group == Student.GROUP5:
+        topics = Student_Question_Topic.objects.all()
     context = {'latest_question_list': latest_question_list.order_by(
-        'sort_order'), 'student': student}
+        'sort_order'), 'student': student, 'topics':topics}
     return render(request, 'polls/STAGE1/quiz_dynamic_individual.html', context)
 
 
@@ -64,6 +67,7 @@ def quiz_log(request, student_id):
     element_type = request.POST.get('type')
     action = request.POST.get('action')
     element_id = request.POST.get('element_id')
+    client_timestamp = request.POST.get('timestamp', "")
     if element_type == 'choice':
         choice_id = element_id.split(',')[1]
         choice = get_object_or_404(Choice, pk=choice_id)
@@ -72,7 +76,7 @@ def quiz_log(request, student_id):
     # print(element_type+" "+element_id+" "+action)
     try:
         log = Log(student_id=student, element_type=element_type,
-                  action=action, element_id=element_id)
+                  action=action, element_id=element_id, client_timestamp=client_timestamp)
         log.save()
     except Exception:
         pass
@@ -95,8 +99,8 @@ def g3_choice(request, student_id):
                 question_type=Question.TYPE2)
         else:
             student.group = Student.GROUP5
-            form = loader.render_to_string(
-                'polls/STAGE1/create_mcq_form_wrapper.html', {})
+            form = loader.render_to_string('polls/STAGE1/create_mcq_form_wrapper.html',
+                {'topics':Student_Question_Topic.objects.all()})
         student.save()
     submit = loader.render_to_string(
         'polls/STAGE1/submit-quiz-button.html', {})
@@ -218,14 +222,27 @@ def submit_quiz(request, student_id):
                 except Exception:
                     pass
         if student.group == Student.GROUP2 or student.group == Student.GROUP5:
-            student_consent_create_mcq = request.POST.get(
-                'consent_create_mcq') == "True"
+            student_consent_create_mcq = request.POST.get('consent_create_mcq') == "True"
             student.consent_create_mcq = student_consent_create_mcq
+            topics_response = [int(topic)
+                               for topic in request.POST.getlist('topics')]
+            student_topics = [{topic.id: topic.text}
+                              for topic in Student_Question_Topic.objects.filter(id__in=topics_response)]
+            student_topics_str = str(student_topics)
             student_question = Student_Question()
             student_question.question_text = request.POST.get('student_question')
             student_question.by_student = student
             student_question.explanation_text = request.POST.get('student_explanation')
+            student_question.topics = student_topics_str
             student_question.save()
+            print('-------------------------------------------')
+            print('-------------------------------------------')
+            print('-------------------------------------------')
+            print(request.POST.getlist('topics'))
+            print('-------------------------------------------')
+            print('-------------------------------------------')
+            print('-------------------------------------------')
+            
             for i in range(1,5):
                 if request.POST.get('student_choice_'+str(i)) != '':
                     student_choice = Student_Choice()

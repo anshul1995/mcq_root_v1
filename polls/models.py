@@ -115,11 +115,19 @@ class Student(models.Model):
 
 class Student_Question(Base_Question):
     explanation_text = models.CharField(max_length=2000)
+    topics = models.CharField(max_length=1000, default="")
     by_student = models.OneToOneField(
         Student,
         on_delete=models.CASCADE,
         related_name='creator_of',
     )
+
+
+class Student_Question_Topic(models.Model):
+    text = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.text
 
 
 class Student_Choice(Base_Choice):
@@ -173,5 +181,6 @@ class Log(models.Model):
     element_type = models.CharField(max_length=100)
     action = models.CharField(max_length=100)
     element_id = models.CharField(max_length=100)
+    client_timestamp = models.CharField(max_length=100, default="")
     def __str__(self):
         return str(self.student_id) + ' : ' + str(self.action) + ' ' + str(self.element_type) + ' ' + str(self.element_id)

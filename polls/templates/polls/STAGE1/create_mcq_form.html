@@ -1,141 +1,112 @@
 <div class="collection-item grey lighten-5">
-    <div class="row">
-        {% if student.group == 'G2' %}
-            <p class="col s12">
-                This week you mastered …. concepts. Now, we want to give you the opportunity to use your newly acquired
-                knowledge and make a useful contribution for future students, that can help them learn better! This
-                activity would also encourage the development of your higher-order cognitive skills and lead to a deeper
-                understanding of these concepts!
-                <br><br>
-                Thus, in part 2 of this assignment, you have to create an MCQ supported by an explanation of how to
-                arrive at the correct answer. If you consent, we would also like to include the created MCQ for future
-                question banks or assessments.
-            </p>
-        {% endif %}
-        <p class="col s12">
-            Create a Multiple choice question with one correct answer and 3 incorrect options. Please select 1 or more
-            topics from the list on the right to create your MCQ. You just answered 6 MCQs which are all good examples
-            of multiple-choice questions that promote higher-order thinking. All of them have the following features,
-            which you should keep in mind while creating your MCQ:<br>
-            <ol>
-                <li>
-                    The question should be very clear, and not likely to be ambiguous.
-                </li>
-                <li>
-                    There must be only one correct answer.
-                </li>
-                <li>
-                    All 3 incorrect options should be plausible. If an option is obviously wrong for all the students,
-                    then it is not a good option. A good incorrect option should be plausible to a student who has not
-                    yet learned the skill or knowledge that the MCQ is trying to assess.
-                </li>
-                <li>
-                    Your MCQ should require the students to think more than simply repeating memorized facts.
-                    Higher-order thinking requires students to do something with the facts: apply them, analyze them,
-                    organize them, align them to concepts and connect to other concepts, question and critique them, and
-                    use them to creatively solve problems.
-                </li>
-            </ol>
-        </p>
-        <p class="col s12">
-            Finally, in 1-2 sentences, explain why the option indicated by you as correct is indeed the correct answer.
-            If required, you may also explain why the other options do not qualify as correct answers.
-        </p>
-        <p class="col s12">
-            <strong>Grading:</strong> This exercise is worth 4 pts with the following break up:<br>
-            Question: 1.5 pt<br>
-            Correct answer: 0.75 pt<br>
-            Three incorrect options: 1 pt<br>
-            Explanation: 0.75 pt
-        </p>
+    {% if student.group == 'G2' %}
+    <p class="row">
+        This week you mastered …. concepts. Now, we want to give you the opportunity to use your newly acquired
+        knowledge and make a useful contribution for future students, that can help them learn better! This
+        activity would also encourage the development of your higher-order cognitive skills and lead to a deeper
+        understanding of these concepts!
+        <br><br>
+        Thus, in part 2 of this assignment, you have to create an MCQ supported by an explanation of how to
+        arrive at the correct answer. If you consent, we would also like to include the created MCQ for future
+        question banks or assessments.
+    </p>
+    {% endif %}
+    <p class="row">
+        Create a Multiple choice question with one correct answer and 3 incorrect options. Please select 1 or more
+        topics from the list on the right to create your MCQ. You just answered 6 MCQs which are all good examples
+        of multiple-choice questions that promote higher-order thinking. All of them have the following features,
+        which you should keep in mind while creating your MCQ:<br>
+        <ol>
+            <li>
+                The question should be very clear, and not likely to be ambiguous.
+            </li>
+            <li>
+                There must be only one correct answer.
+            </li>
+            <li>
+                All 3 incorrect options should be plausible. If an option is obviously wrong for all the students,
+                then it is not a good option. A good incorrect option should be plausible to a student who has not
+                yet learned the skill or knowledge that the MCQ is trying to assess.
+            </li>
+            <li>
+                Your MCQ should require the students to think more than simply repeating memorized facts.
+                Higher-order thinking requires students to do something with the facts: apply them, analyze them,
+                organize them, align them to concepts and connect to other concepts, question and critique them, and
+                use them to creatively solve problems.
+            </li>
+        </ol>
+    </p>
+    <p class="row">
+        Finally, in 1-2 sentences, explain why the option indicated by you as correct is indeed the correct answer.
+        If required, you may also explain why the other options do not qualify as correct answers.
+    </p>
+    <p class="row">
+        <strong>Grading:</strong> This exercise is worth 4 pts with the following break up:<br>
+        Question: 1.5 pt<br>
+        Correct answer: 0.75 pt<br>
+        Three incorrect options: 1 pt<br>
+        Explanation: 0.75 pt
+    </p>
+
+    <div class="input-field row">
+        <select multiple name="topics" required>
+            <option value="" disabled>Topics:</option>
+            {% for topic in topics %}
+                <option value="{{ topic.id }}">{{ topic.text }}</option>
+            {% endfor %}
+        </select>
+        <label>Choose topics relevant to your question</label>
     </div>
 
-       <div class="row">
-           <div class="input-field col s12">
-               <select multiple required>
-                   <option value="" disabled>Topics:</option>
-                   <option value="1">Pandas series datas structire</option>
-                   <option value="2">Querying a series data structire</option>
-                   <option value="3">Pandas indexing operators, loc and iloc</option>
-                   <option value="4">Pandas dataframes </option>
-                   <option value="5">Dataframe axis</option>
-                   <option value="6">Creating and using pandas dataFrames to represent raw data</option>
-                   <option value="7">Adding new values to dataframes</option>
-                   <option value="8">Merging dataframes (outer joins, inner joins)</option>
-                   <option value="9">Group by</option>
-                   <option value="10">Pivot table</option>
-                   <option value="11">Time series data</option>
-                   <option value="12">Storing dataframes </option>
-                   <option value="13">Other</option>
-               </select>
-               <label>Choose topics relevant to your question</label>
-           </div>
-       </div>
-
-    <div class="row">
-        <div class="input-field col s12">
-            <textarea class="materialize-textarea log-text tooltipped" id="student_question" name="student_question"
-                data-position="bottom" data-tooltip="Make sure that the question is clear and not ambiguous!"
-                required></textarea>
-            <label for="student_question">Question</label>
-            <span class="helper-text">Required</span>
-        </div>
+    <div class="input-field row">
+        <textarea class="materialize-textarea log-text tooltipped" id="student_question" name="student_question"
+            data-position="bottom" data-tooltip="Make sure that the question is clear and not ambiguous!"
+            required></textarea>
+        <label for="student_question">Question</label>
+        <span class="helper-text">Required</span>
     </div>
 
-    <div class="row">
-        <div class="input-field col s12">
-            <textarea class="materialize-textarea log-text tooltipped" id="student_choice_1" name="student_choice_1"
-                data-position="bottom" data-tooltip="Make sure that this is the correct answer!" required></textarea>
-            <label for="student_choice_1">Correct Choice</label>
-            <span class="helper-text">Required</span>
-        </div>
+    <div class="input-field row">
+        <textarea class="materialize-textarea log-text tooltipped" id="student_choice_1" name="student_choice_1"
+            data-position="bottom" data-tooltip="Make sure that this is the correct answer!" required></textarea>
+        <label for="student_choice_1">Correct Choice</label>
+        <span class="helper-text">Required</span>
     </div>
 
-    <div class="row">
-        <div class="input-field col s12">
-            <textarea class="materialize-textarea log-text tooltipped" id="student_choice_2" name="student_choice_2"
-                data-position="bottom" data-tooltip="Make sure that this is an incorrect alternative!"
-                required></textarea>
-            <label for="student_choice_2">Incorrect Choice 1</label>
-            <span class="helper-text">Required</span>
-        </div>
+    <div class="input-field row">
+        <textarea class="materialize-textarea log-text tooltipped" id="student_choice_2" name="student_choice_2"
+            data-position="bottom" data-tooltip="Make sure that this is an incorrect alternative!" required></textarea>
+        <label for="student_choice_2">Incorrect Choice 1</label>
+        <span class="helper-text">Required</span>
     </div>
 
-    <div class="row">
-        <div class="input-field col s12">
-            <textarea class="materialize-textarea log-text tooltipped" id="student_choice_3" name="student_choice_3"
-                data-position="bottom" data-tooltip="Make sure that this is an incorrect alternative!"
-                required></textarea>
-            <label for="student_choice_3">Incorrect Choice 2</label>
-            <span class="helper-text">Required</span>
-        </div>
+    <div class="input-field row">
+        <textarea class="materialize-textarea log-text tooltipped" id="student_choice_3" name="student_choice_3"
+            data-position="bottom" data-tooltip="Make sure that this is an incorrect alternative!" required></textarea>
+        <label for="student_choice_3">Incorrect Choice 2</label>
+        <span class="helper-text">Required</span>
     </div>
 
-    <div class="row">
-        <div class="input-field col s12">
-            <textarea class="materialize-textarea log-text tooltipped" id="student_choice_4" name="student_choice_4"
-                data-position="bottom" data-tooltip="Make sure that this is an incorrect alternative!"
-                required></textarea>
-            <label for="student_choice_4">Incorrect Choice 3</label>
-            <span class="helper-text">Required</span>
-        </div>
+    <div class="input-field row">
+        <textarea class="materialize-textarea log-text tooltipped" id="student_choice_4" name="student_choice_4"
+            data-position="bottom" data-tooltip="Make sure that this is an incorrect alternative!" required></textarea>
+        <label for="student_choice_4">Incorrect Choice 3</label>
+        <span class="helper-text">Required</span>
     </div>
 
-    <div class="row">
-        <div class="input-field col s12">
-            <textarea class="materialize-textarea log-text tooltipped" id="student_explanation" name="student_explanation"
-                data-position="bottom" data-tooltip="Your explanation should serve to help any student who is unable to
+    <div class="input-field row">
+        <textarea class="materialize-textarea log-text tooltipped" id="student_explanation" name="student_explanation"
+            data-position="bottom" data-tooltip="Your explanation should serve to help any student who is unable to
                 answer the MCQ incorrectly." required></textarea>
-            <label for="student_explanation">Explanation</label>
-            <span class="helper-text">Required</span>
-        </div>
+        <label for="student_explanation">Explanation</label>
+        <span class="helper-text">Required</span>
     </div>
 
     <div class="row">
-        <span class="col s12">Can I use the MCQ created by you for future research studies given that no personal
+        <span>Can I use the MCQ created by you for future research studies given that no personal
             identifiers will be stored or linked back to you?</span>
         <p>
-            <label class="col s12">
+            <label>
                 <input type="radio" name="consent_create_mcq" value="True" class="with-gap umblue" required>
                 <span>
                     <span class="black-text">Yes</span>
@@ -143,7 +114,7 @@
             </label>
         </p>
         <p>
-            <label class="col s12">
+            <label>
                 <input type="radio" name="consent_create_mcq" value="False" class="with-gap umblue" required>
                 <span>
                     <span class="black-text">No</span>

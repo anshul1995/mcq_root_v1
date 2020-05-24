@@ -63,14 +63,14 @@ class StudentSurveyResponseInline(admin.TabularInline):
 
 class StudentQuestionResponseInline(admin.TabularInline):
     model = Student_Question
-    readonly_fields = ('question_text', 'explanation_text',)
+    readonly_fields = ('question_text', 'explanation_text', 'topics',)
     can_delete = False
     extra = 0
 
 
 class StudentLogInline(admin.TabularInline):
     model = Log
-    readonly_fields = ('student_id', 'time', 'element_type', 'action','element_id',)
+    readonly_fields = ('student_id', 'time', 'element_type', 'action','element_id', 'client_timestamp',)
     can_delete = False
     extra = 0
 
@@ -85,7 +85,7 @@ class StudentAdditionalTextInline(admin.TabularInline):
 class LogAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': [
-         'student_id', 'time', 'element_type', 'action', 'element_id']}),
+         'student_id', 'time', 'element_type', 'action', 'element_id', 'client_timestamp']}),
     ]
     readonly_fields = ('student_id', 'time', 'element_type',
                        'action', 'element_id',)
@@ -119,3 +119,5 @@ admin.site.register(Student_Response)
 admin.site.register(Student_Survey_Response)
 
 admin.site.register(Log, LogAdmin)
+
+admin.site.register(Student_Question_Topic)
