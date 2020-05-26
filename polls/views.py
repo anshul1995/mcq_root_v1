@@ -11,6 +11,7 @@ import random
 import codecs
 import json
 import logging
+import os
 
 from .models import *
 # from .models import Question, Choice, Student, Student_Choice, Student_Question, Student_Response, Survey_Choice, Survey_Question
@@ -62,7 +63,8 @@ def quiz(request, student_id):
 
 @require_POST
 def quiz_log(request, student_id):
-    # now = timezone.now()
+    now = timezone.now()
+    date = now.date()
     student = get_object_or_404(Student, pk=student_id)
     element_type = request.POST.get('type')
     action = request.POST.get('action')
@@ -73,11 +75,24 @@ def quiz_log(request, student_id):
         choice = get_object_or_404(Choice, pk=choice_id)
         append = "correct" if choice.is_correct else "incorrect"
         action = action + " " + append
-    # print(element_type+" "+element_id+" "+action)
     try:
-        log = Log(student_id=student, element_type=element_type,
-                  action=action, element_id=element_id, client_timestamp=client_timestamp)
-        log.save()
+        # log = Log(student_id=student, element_type=element_type,
+        #           action=action, element_id=element_id, client_timestamp=client_timestamp)
+        # log.save()
+        log_dict = {
+            'student_id': str(student),
+            'element_type': element_type,
+            'action': action,
+            'element_id': element_id,
+            'client_timestamp': client_timestamp,
+            'server_timestamp': str(now)
+        }
+        log_str = json.dumps(log_dict)
+        filename = "./student_response_log/"+str(date)+".txt"
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        with open(filename, "a") as f:
+            f.write(log_str)
+            f.write('\n')
     except Exception:
         pass
     return HttpResponse(
